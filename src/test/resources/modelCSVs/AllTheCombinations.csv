@@ -1,0 +1,21 @@
+ID;Question;Type;Range;Cardinality;Constraint/Rule;Visible/relevant if
+A;A?;Boolean;true | false;;;true
+A_;Which A_?;Enumeration;A5 | A6;1:1;;A
+A__;Which A__?;Enumeration;A7 | A8;1:2;;A
+A1;A1?;Boolean;true | false;;;A
+A2;A2?;Boolean;true | false;;;A
+B;B?;Boolean;true | false;;;true
+C;Which C?;Enumeration;C5 | C6;1:1;;true
+C_;Which C_?;Enumeration;C7 | C8;1:2;;true
+C1;C1?;Boolean;true | false;;;true
+C2;C2?;Boolean;true | false;;;true
+E_;Which E_?;Enumeration;E5 | E6;1:1;;RootFeature.E
+E__;Which E__?;Enumeration;E7 | E8;1:2;;RootFeature.E
+E1;E1?;Boolean;true | false;;;RootFeature.E
+E2;E2?;Boolean;true | false;;;RootFeature.E
+G_;Which G_?;Enumeration;G5 | G6;1:1;;RootFeature_.G
+G__;Which G__?;Enumeration;G7 | G8;1:2;;RootFeature_.G
+G1;G1?;Boolean;true | false;;;RootFeature_.G
+G2;G2?;Boolean;true | false;;;RootFeature_.G
+RootFeature;Which RootFeature?;Enumeration;E | F;1:1;;true
+RootFeature_;Which RootFeature_?;Enumeration;G | H;1:2;;true

@@ -1,0 +1,5 @@
+ID;Question;Type;Range;Cardinality;Constraint/Rule;Visible/relevant if
+Topping;Which Topping do you want on your pizza?;Enumeration;Salami | Ham | Mozzarella;1:3;;TRUE
+Size;Which Size should the pizza have?;Enumeration;Normal | Big;1:1;;TRUE
+Dough;Which Dough do you prefer?;Enumeration;Neapolitan | Sicilian;1:1;;TRUE
+CheesyCrust;Should the pizza have a cheesy crust?;Boolean;true | false;;if (CheesyCrust) { Size = Big };TRUE

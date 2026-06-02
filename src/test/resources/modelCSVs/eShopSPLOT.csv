@@ -1,0 +1,5 @@
+ID;Question;Type;Range;Cardinality;Constraint/Rule;Visible/relevant if
+buscador;buscador?;Boolean;true | false;;"if (true) {buscador = true;}";true
+pago;Which pago?;Enumeration;transferencias | tarjetacredito;1:2;;true
+reportepublico;reportepublico?;Boolean;true | false;;"if (seguridad.alta) {reportepublico = false;}";true
+seguridad;Which seguridad?;Enumeration;alta | estandar;1:1;"if (pago.tarjetacredito) {seguridad = alta;}";true

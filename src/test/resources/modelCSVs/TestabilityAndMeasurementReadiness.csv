@@ -1,0 +1,3 @@
+ID;Question;Type;Range;Cardinality;Constraint/Rule;Visible/relevant if
+Aspects;Which performance aspect(s) should be the primary focus for modeling this microservice?;Enumeration;CPU utilization (in %) | Memory Usage (in MB) | Network throughput (in Mbps);1:3;;true
+Runnable;Are runnable binaries or container images of this microservice readily available for performance testing in an isolated environment?; Boolean;false |true;;;true

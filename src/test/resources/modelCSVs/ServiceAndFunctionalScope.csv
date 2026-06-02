@@ -1,0 +1,7 @@
+ID;Question;Type;Range;Cardinality;Constraint/Rule;Visible/relevant if
+MS_CorePurpose;What is this microservice’s core purpose or business function?;String;;;;true
+InputParameters;For this microservice, which input parameters or request fields are accepted?;String;;;;true
+ParameterValues;What are their typical sizes or ranges?;Number;;;;InputParameters
+OtherSevices;During a typical request, which other services, data stores, or external systems does this microservice call?;Enumeration;data stores | external systems | other systems;1:3;;true
+Stateless;Does this microservice maintain state between requests, or is it stateless?;Boolean;false | true;;;true
+ErrorHandling;What error-handling or resiliency mechanisms are implemented in this microservice?;Enumeration;retries | circuit breakers;1:2;;true

@@ -1,0 +1,14 @@
+ID;Question;Type;Range;Cardinality;Constraint/Rule;Visible/relevant if
+Gui;Gui?;Boolean;true | false;;;true
+Xml;Xml?;Boolean;true | false;;;true
+Xml_;Which Xml_?;Enumeration;xc | xak;1:1;"if (Xml_.xc) {Xml = true;}if (Xml_.xak) {Xml = true;}";Xml
+aj;aj?;Boolean;true | false;;;true
+bc;bc?;Boolean;true | false;;"if (bc) {mmatrix = true;}";true
+cpp;cpp?;Boolean;true | false;;;true
+drc;drc?;Boolean;true | false;;;true
+guidsl;guidsl?;Boolean;true | false;;;Gui
+jedi;jedi?;Boolean;true | false;;;true
+me;me?;Boolean;true | false;;"if (me) {mmatrix = true;}";Gui
+mmatrix;mmatrix?;Boolean;true | false;;;Gui
+reform;reform?;Boolean;true | false;;;true
+web;web?;Boolean;true | false;;;Gui

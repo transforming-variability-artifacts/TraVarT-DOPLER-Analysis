@@ -1,0 +1,10 @@
+ID;Question;Type;Range;Cardinality;Constraint/Rule;Visible/relevant if
+Maps;Maps?;Boolean;true | false;;"if (Maps) {Camera = true;}";TRUE
+ObstacleDetection;Obstracle Detection?;Enumeration;Sensor | AI | Physical;1:3;"if (ObstacleDetection = ObstacleDetection.AI) {Camera = true;}";TRUE
+MopMode;Mop Mode?;Boolean;true | false;;"if (MopMode) {ExtraStorage = ExtraStorage.'Water storage';}";TRUE
+Camera;Camera?;Boolean;true | false;;;TRUE
+ExtraStorage;Extra Storage?;Enumeration;Dust storage | Water storage;1:1;;TRUE
+App;App support?;Boolean;true | false;;;TRUE
+ErrorCodes;Error messages?;Enumeration;Email | Mobile | Push;1:3;;App
+Email;Email?;String;;;;App.Email
+Mobile;Mobile?;Number;;;;App.Mobile

@@ -1,0 +1,4 @@
+ID;Question;Type;Range;Cardinality;Constraint/Rule;Visible/relevant if
+Audio_Formats*;Which Audio_Formats*?;Enumeration;WAV | MP3;1:2;"if (VIRTUAL_ROOT.MP3_Recording) {Audio_Formats* = MP3;}";VIRTUAL_ROOT.Audio_Formats
+Camera_Resolution*;Which Camera_Resolution*?;Enumeration;T21MP | T5MP | T31MP;1:1;;VIRTUAL_ROOT.Camera_Resolution
+VIRTUAL_ROOT;Which VIRTUAL_ROOT?;Enumeration;GSM_Protocol_1900 | MP3_Recording | Camera_Resolution | Camera | Audio_Formats;1:5;"if (VIRTUAL_ROOT.MP3_Recording) {Audio_Formats* = MP3;}";true

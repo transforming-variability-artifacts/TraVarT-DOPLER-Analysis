@@ -1,21 +1,21 @@
 # Analysis of Decision Models
 
 ## Run
-This tool invokes the Z3 SMT solver. You can now pass the path to your Z3 binary when starting the program:
 
-- As first argument: `java -jar smt_dopler-2.0.0.jar /full/path/to/z3`
-- Or with flags: `java -jar smt_dopler-2.0.0.jar --z3=/full/path/to/z3` or `-z /full/path/to/z3`
-- Or via environment variable: `Z3_PATH=/full/path/to/z3 java -jar smt_dopler-2.0.0.jar`
+Put the following dll or so files into the dependencies folder: `libcvc5jni`, `libz3`, `libz3java`.
+This works both for development and with the final jar, which also requires the dependencies folder next to it.
+
+This tool invokes the SMT solver for a given dopler model file:
+
+- As first argument: `java -jar smt_dopler-2.0.0.jar <path to model>`
 
 Help:
 
 - `java -jar smt_dopler-2.0.0.jar --help`
 
-If no path is provided, the program will try to execute `z3` from your PATH.
-
 ## Parser
 
-Information about the parser see [here](Parser.md)
+Information about the parser see [here](docs/Parser.md)
 
 ## DOPLER META-MODEL
 
@@ -33,14 +33,17 @@ If there is a visibility condition associated with a decision, the user has to f
 
 ## SMT Encoding
 
-Detailed Explanation of the SMT Encoding you can find [here](SMTEncoding.md)
+Detailed Explanation of the SMT Encoding you can find [here](docs/SMTEncoding.md)
+
+## ILP Encoding
+
+Detailed Explanation of the ILP Encoding you can find [here](docs/ILPEncoding.md)
+
 
 ## CP Encoding
 
-Detailed Explanation of the CP Encoding you can find [here](CPEncoding.md)
+Detailed Explanation of the CP Encoding you can find [here](docs/CPEncoding.md)
 
 ## CI Pipeline
 
-Information about the CI pipeline see [here](CIPipeline.md)
-
-
+Information about the CI pipeline see [here](docs/CIPipeline.md)

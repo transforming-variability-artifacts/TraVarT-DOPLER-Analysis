@@ -1,0 +1,4 @@
+ID;Question;Type;Range;Cardinality;Constraint/Rule;Visible/relevant if
+AccountType;What is the account type?;String;;;;true
+AccessLevel;What is the access level?;Enumeration;A | B | C | D;1:2;;AccountType == 'Manager'
+Test;nothing;Boolean;true | false;;"if(!(AccountType == 'Manager')){AccessLevel=A;}if(!(AccountType == 'Manager')){AccessLevel=B;}if(!(AccountType == 'Manager')){AccessLevel=C;}";true

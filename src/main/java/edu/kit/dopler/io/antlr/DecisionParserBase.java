@@ -6,26 +6,20 @@
  * with this file, You can obtain one at
  * https://mozilla.org/MPL/2.0/.
  *
- * Contributors: 
- *    @author David Kowal
- *    @author Kevin Feichtinger
- *
  * Copyright 2024 Karlsruhe Institute of Technology (KIT)
  * KASTEL - Dependability of Software-intensive Systems
  *******************************************************************************/
-
 package edu.kit.dopler.io.antlr;
 
 import edu.kit.dopler.io.antlr.resources.DoplerParserBaseListener;
 import edu.kit.dopler.model.Dopler;
-import edu.kit.dopler.model.EnumerationLiteral;
-import edu.kit.dopler.model.IDecision;
+import edu.kit.dopler.model.basic.EnumerationLiteral;
+import edu.kit.dopler.model.decisions.IDecision;
+import java.util.ArrayList;
+import java.util.List;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class DecisionParserBase extends DoplerParserBaseListener {
     protected final int column_ID = 0;
@@ -72,5 +66,4 @@ public abstract class DecisionParserBase extends DoplerParserBaseListener {
             }
         }
     }
-
 }

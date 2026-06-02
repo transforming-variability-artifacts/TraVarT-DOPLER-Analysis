@@ -1,0 +1,23 @@
+ID;Question;Type;Range;Cardinality;Constraint/Rule;Visible/relevant if
+Accessibility;Which Accessibility?;Enumeration;ConfigureVoiceRecognition | MakeTheKeyboardEasierToUse | Readability | MAkeTheMouseEasyToUse;1:4;;true
+AdjustTheResolution*;Which AdjustTheResolution*?;Enumeration;Display | Resolution;1:2;;EnlargeTheItemDisplayedOnTheScreen*.AdjustTheResolution
+AeroTheme*;Which AeroTheme*?;Enumeration;Architecture | Characters | Nature | Landscape | Windows7 | Scene;1:1;;HighContrast*.AeroTheme
+BasicThemeAndContrast*;Which BasicThemeAndContrast*?;Enumeration;HighWhiteContrast | HighBlackContrast | HighContrastNumber2 | HighContrastNumber1 | ClassicWindows;1:1;;HighContrast*.BasicThemeAndContrast
+ConfigureTheMicrophone*;Which ConfigureTheMicrophone*?;Enumeration;Other_ | MicrophoneOnHeadphones_ | OfficeMicrophone_;1:1;;ConfigureVoiceRecognition*.ConfigureTheMicrophone
+ConfigureVoiceRecognition*;Which ConfigureVoiceRecognition*?;Enumeration;RunTheLearningModuleOfYourVoice | StartVoiceRecognition | VoiceRecognitionTutorial | ConfigureTheMicrophone;1:4;;Accessibility.ConfigureVoiceRecognition
+Display_;Display_?;Boolean;true | false;;;MagnifyingGlass
+Display_*;Which Display_*?;Enumeration;FullScreenPreview | FullScreen | MagnifyingGlass_ | Anchor;1:1;;Display_
+DisplayorFactorWhenZooming*;Which DisplayorFactorWhenZooming*?;Enumeration;LessTwentyFivePerCent | MoreFourHundredPerCent;1:1;;Parameter*.DisplayorFactorWhenZooming
+EasyOnScreenPlayback_1;Which EasyOnScreenPlayback_1?;Enumeration;AverageOneHundredAndTwentyFivePerCent | SmallOneHundredPerCent;1:1;;Readability*.EasyOnScreenPlayback
+EnlargeTheItemDisplayedOnTheScreen*;Which EnlargeTheItemDisplayedOnTheScreen*?;Enumeration;AdjustTextCleartype | SetCustomTextSize | ColorCalibration | AdjustTheResolution;1:4;;Readability*.EnlargeTheItemDisplayedOnTheScreen
+HearTextAndDescriptionReadAloud*;Which HearTextAndDescriptionReadAloud*?;Enumeration;EnableAudioDescription | ActivateTheNarrator;1:2;;Readability*.HearTextAndDescriptionReadAloud
+HighContrast*;Which HighContrast*?;Enumeration;AeroTheme | BasicThemeAndContrast;1:1;;Readability*.HighContrast
+MagnifyingGlass;MagnifyingGlass?;Boolean;true | false;;;Readability*.EasyOnScreenPlayback
+MagnifyingGlass_1;Which MagnifyingGlass_1?;Enumeration;ZoomOutOneHundredPercent | ZoomInOneThousandSixHundredPerCent;1:1;;MagnifyingGlass
+MakeEntryEasier*;Which MakeEntryEasier*?;Enumeration;ActivateTheToggleButtons | ActivateRetentiveKeys | ActivateTheFilterKeys;1:3;;MakeTheKeyboardEasierToUse*.MakeEntryEasier
+MakeTheKeyboardEasierToUse*;Which MakeTheKeyboardEasierToUse*?;Enumeration;ControlTheMouseWithTheKeyboard_ | MakeEntryEasier;1:2;;Accessibility.MakeTheKeyboardEasierToUse
+Parameter;Parameter?;Boolean;true | false;;;MagnifyingGlass
+Parameter*;Which Parameter*?;Enumeration;TheMagnifyingGlassMustFollowTheInsertionPointOfTheText | FollowTheMousePointer | TrackSelectedItemThroughKeyboard | DisplayorFactorWhenZooming | EnableColorInversion;1:5;;Parameter
+Readability*;Which Readability*?;Enumeration;HearTextAndDescriptionReadAloud | EnlargeTheItemDisplayedOnTheScreen | EasyOnScreenPlayback | HighContrast;1:4;;Accessibility.Readability
+Resolution*;Which Resolution*?;Enumeration;R800x600 | R1366x768 | R1024x768;1:1;;AdjustTheResolution*.Resolution
+StartVoiceRecognition*;Which StartVoiceRecognition*?;Enumeration;OfficeMicrophone | MicrophoneOnHeadphones | Other;1:1;;ConfigureVoiceRecognition*.StartVoiceRecognition

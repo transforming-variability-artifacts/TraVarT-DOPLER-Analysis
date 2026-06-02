@@ -1,0 +1,2 @@
+ID;Question;Type;Range;Cardinality;Constraint/Rule;Visible/relevant if
+Artefacts;Which supporting artefacts for this microservice are available for reference?;Enumeration;requirements docs | architecture diagrams | API definitions | source repositories;1:4;;true

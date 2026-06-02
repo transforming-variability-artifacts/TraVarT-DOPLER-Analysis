@@ -6,7 +6,7 @@
  * with this file, You can obtain one at
  * https://mozilla.org/MPL/2.0/.
  *
- * Contributors: 
+ * Contributors:
  * 	@author David Kowal
  * 	@author Kevin Feichtinger
  *
@@ -129,8 +129,8 @@ NumberDecision
 EnumerationDecision
     : ENUMERATION
     ;
-ENUMERATION  
-    : 'Enumeration' 
+ENUMERATION
+    : 'Enumeration'
     ;
 
 BooleanDecision
@@ -144,4 +144,4 @@ SPECIAL_CHAR
 IDENTIFIER
     : [a-zA-Z0-9_*][a-zA-Z0-9_*]*
     | [a-zA-Z_*][a-zA-Z-*]*
-    ; 
+    ;

@@ -1,0 +1,7 @@
+ID;Question;Type;Range;Cardinality;Constraint/Rule;Visible/relevant if
+Tool;Which Tool?;Enumeration;A | B | C | D;1:1;;true
+require;require?;Boolean;true | false;;;true
+requireBali2jak;requireBali2jak?;Boolean;true | false;;;Tool.A
+requireBali2jcc;requireBali2jcc?;Boolean;true | false;;;Tool.B
+requireComposer;requireComposer?;Boolean;true | false;;;Tool.C
+requireSyntax;requireSyntax?;Boolean;true | false;;;true

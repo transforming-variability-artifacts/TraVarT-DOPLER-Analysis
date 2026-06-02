@@ -1,0 +1,11 @@
+ID;Question;Type;Range;Cardinality;Constraint/Rule;Visible/relevant if
+Categories;Categories?;Boolean;true | false;;;true
+CommunityForum;CommunityForum?;Boolean;true | false;;;true
+Compatibility;Which Compatibility?;Enumeration;PC | Tablets | Phone;1:3;;true
+HelpAndSupport;Which HelpAndSupport?;Enumeration;Email | FAQ | Phone_2 | Chat;1:4;;true
+Payment;Which Payment?;Enumeration;CreditCard | PayPal | Cheque | PostalOrder | Escrow;1:5;;true
+Phone*;Which Phone*?;Enumeration;Windows_1 | Apple_1 | Android_1;1:3;;Compatibility.Phone
+Register;Which Register?;Enumeration;Retailer | Private;1:1;;true
+Security;Which Security?;Enumeration;High | Standard_1;1:1;"if (Payment.CreditCard) {Security = High;}";true
+Shipment;Which Shipment?;Enumeration;Premium | Standard;1:2;;true
+Tablets*;Which Tablets*?;Enumeration;Windows | Apple | Android;1:3;;Compatibility.Tablets

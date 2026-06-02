@@ -1,0 +1,21 @@
+ID;Question;Type;Range;Cardinality;Constraint/Rule;Visible/relevant if
+V10_Hazardous_situation_alarm;V10_Hazardous_situation_alarm?;Boolean;true | false;;;VIRTUAL_ROOT.VP3_Comfort_functions
+V17_Emergency_break;V17_Emergency_break?;Boolean;true | false;;"if (V10_Hazardous_situation_alarm) {V17_Emergency_break = true;}";VIRTUAL_ROOT.VP6_Behaviour_in_hazardous_situations
+V18_Road_w_or_right_of_way_start;V18_Road_w_or_right_of_way_start?;Boolean;true | false;;;VIRTUAL_ROOT.VP7_Other_signs
+V19_City_limit;V19_City_limit?;Boolean;true | false;;"if (V8_Overspeed_warning) {V19_City_limit = true;}";VIRTUAL_ROOT.VP7_Other_signs
+V26_No_vehicles;V26_No_vehicles?;Boolean;true | false;;"if (VP1_Type_of_vehicle*.V1_Medium_class_car) {V26_No_vehicles = true;}";VIRTUAL_ROOT.VP8_Prohibition_signs
+V27_No_cars;V27_No_cars?;Boolean;true | false;;"if (VP1_Type_of_vehicle*.V1_Medium_class_car) {V27_No_cars = true;}";VIRTUAL_ROOT.VP8_Prohibition_signs
+V34_Danger;V34_Danger?;Boolean;true | false;;"if (V9_Sound_at_warning_signs) {V34_Danger = true;}";VIRTUAL_ROOT.VP9_Warning_signs
+V35_Side_winds;V35_Side_winds?;Boolean;true | false;;;VIRTUAL_ROOT.VP9_Warning_signs
+V40_Stop_and_give_way;V40_Stop_and_give_way?;Boolean;true | false;;;VIRTUAL_ROOT.VP10_Signs_giving_orders
+V41_No_overtaking;V41_No_overtaking?;Boolean;true | false;;"if (VP1_Type_of_vehicle*.V1_Medium_class_car) {V41_No_overtaking = true;}";VIRTUAL_ROOT.VP10_Signs_giving_orders
+V7_No_stopping_warning;V7_No_stopping_warning?;Boolean;true | false;;;VIRTUAL_ROOT.VP3_Comfort_functions
+V8_Overspeed_warning;V8_Overspeed_warning?;Boolean;true | false;;;VIRTUAL_ROOT.VP3_Comfort_functions
+V9_Sound_at_warning_signs;V9_Sound_at_warning_signs?;Boolean;true | false;;;VIRTUAL_ROOT.VP3_Comfort_functions
+VIRTUAL_ROOT;Which VIRTUAL_ROOT?;Enumeration;VP1_Type_of_vehicle | VP2_Activation | VP3_Comfort_functions | VP4_Behaviour_at_warning_signs | VP5_Behaviour_at_no_stopping_signs | VP6_Behaviour_in_hazardous_situations | VP7_Other_signs | VP8_Prohibition_signs | VP9_Warning_signs | VP10_Signs_giving_orders;1:10;;true
+VP11_Indication__of_hazardous_situation;VP11_Indication__of_hazardous_situation?;Boolean;true | false;;;VIRTUAL_ROOT.VP6_Behaviour_in_hazardous_situations
+VP11_Indication__of_hazardous_situation*;Which VP11_Indication__of_hazardous_situation*?;Enumeration;V15_Show_on_display | V16_Display_and_sound_indication;1:1;"if (V10_Hazardous_situation_alarm) {VP11_Indication__of_hazardous_situation* = V16_Display_and_sound_indication;}";VP11_Indication__of_hazardous_situation
+VP1_Type_of_vehicle*;Which VP1_Type_of_vehicle*?;Enumeration;V1_Medium_class_car | V2_Upper_class_car | V3_Small_truck_3dot5t | V4_Big_truck_7dot5t;1:1;;VIRTUAL_ROOT.VP1_Type_of_vehicle
+VP2_Activation*;Which VP2_Activation*?;Enumeration;V5_Switchable | V6_Durable;1:1;"if (VP1_Type_of_vehicle*.V4_Big_truck_7dot5t) {VP2_Activation* = V6_Durable;}";VIRTUAL_ROOT.VP2_Activation
+VP4_Behaviour_at_warning_signs*;Which VP4_Behaviour_at_warning_signs*?;Enumeration;V11_Show_warning_sign | V12_Display_and_sound_indication;1:1;"if (V9_Sound_at_warning_signs) {VP4_Behaviour_at_warning_signs* = V12_Display_and_sound_indication;}if (V9_Sound_at_warning_signs) {disAllow(VP4_Behaviour_at_warning_signs*.V11_Show_warning_sign);}";VIRTUAL_ROOT.VP4_Behaviour_at_warning_signs
+VP5_Behaviour_at_no_stopping_signs*;Which VP5_Behaviour_at_no_stopping_signs*?;Enumeration;V13_Warn_for_no_stopping_sign | V14_No_warning;1:1;"if (V7_No_stopping_warning) {disAllow(VP5_Behaviour_at_no_stopping_signs*.V14_No_warning);}";VIRTUAL_ROOT.VP5_Behaviour_at_no_stopping_signs

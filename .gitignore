@@ -1,7 +1,23 @@
-/bin/
-/target/
+# Build output
+target/
+bin/
+build/
+out/
+
+# IDEs
+.idea/
+**/.idea/
+.vscode/
+.settings/
 .project
-.idea
-.vscode
-.settings
-encoding.smt2
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+dependencies/**/*.dll
+dependencies/**/*.so
+
+# Logs
+*.log

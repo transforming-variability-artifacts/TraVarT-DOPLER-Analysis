@@ -1,0 +1,33 @@
+ID;Question;Type;Range;Cardinality;Constraint/Rule;Visible/relevant if
+CW_authentication;CW_authentication?;Boolean;true | false;;;VIRTUAL_ROOT.CW
+CW_autogenerate;CW_autogenerate?;Boolean;true | false;;;VIRTUAL_ROOT.CW
+CW_decisionboard;CW_decisionboard?;Boolean;true | false;;;VIRTUAL_ROOT.CW
+CW_documenation;CW_documenation?;Boolean;true | false;;;VIRTUAL_ROOT.CW
+CW_flatfilegenerator;CW_flatfilegenerator?;Boolean;true | false;;;VIRTUAL_ROOT.CW
+CW_guidance;CW_guidance?;Boolean;true | false;;;VIRTUAL_ROOT.CW
+CW_guidance*;Which CW_guidance*?;Enumeration;After_first_selection | Always;1:1;;CW_guidance
+CW_requirementsView;CW_requirementsView?;Boolean;true | false;;;VIRTUAL_ROOT.CW
+CW_resolution;CW_resolution?;Boolean;true | false;;;VIRTUAL_ROOT.CW
+CW_resolution*;Which CW_resolution*?;Enumeration;p1400x1050 | p800x600 | p1280x1024 | p1900x1080 | p1024x768 | p1600x1200;1:1;;CW_resolution
+CW_resolution_height_1024;CW_resolution_height_1024?;Boolean;true | false;;"if (CW_resolution*.p1280x1024) {CW_resolution_height_1024 = true;}";VIRTUAL_ROOT.CW_resolution_height
+CW_resolution_height_1050;CW_resolution_height_1050?;Boolean;true | false;;"if (CW_resolution*.p1400x1050) {CW_resolution_height_1050 = true;}";VIRTUAL_ROOT.CW_resolution_height
+CW_resolution_height_1080;CW_resolution_height_1080?;Boolean;true | false;;"if (CW_resolution*.p1900x1080) {CW_resolution_height_1080 = true;}";VIRTUAL_ROOT.CW_resolution_height
+CW_resolution_height_1200;CW_resolution_height_1200?;Boolean;true | false;;"if (CW_resolution*.p1600x1200) {CW_resolution_height_1200 = true;}";VIRTUAL_ROOT.CW_resolution_height
+CW_resolution_height_600;CW_resolution_height_600?;Boolean;true | false;;"if (CW_resolution*.p800x600) {CW_resolution_height_600 = true;}";VIRTUAL_ROOT.CW_resolution_height
+CW_resolution_height_768;CW_resolution_height_768?;Boolean;true | false;;"if (CW_resolution*.p1024x768) {CW_resolution_height_768 = true;}";VIRTUAL_ROOT.CW_resolution_height
+CW_resolution_width_1024;CW_resolution_width_1024?;Boolean;true | false;;"if (CW_resolution*.p1024x768) {CW_resolution_width_1024 = true;}";VIRTUAL_ROOT.CW_resolution_width
+CW_resolution_width_1280;CW_resolution_width_1280?;Boolean;true | false;;"if (CW_resolution*.p1280x1024) {CW_resolution_width_1280 = true;}";VIRTUAL_ROOT.CW_resolution_width
+CW_resolution_width_1400;CW_resolution_width_1400?;Boolean;true | false;;"if (CW_resolution*.p1400x1050) {CW_resolution_width_1400 = true;}";VIRTUAL_ROOT.CW_resolution_width
+CW_resolution_width_1600;CW_resolution_width_1600?;Boolean;true | false;;"if (CW_resolution*.p1600x1200) {CW_resolution_width_1600 = true;}";VIRTUAL_ROOT.CW_resolution_width
+CW_resolution_width_1900;CW_resolution_width_1900?;Boolean;true | false;;"if (CW_resolution*.p1900x1080) {CW_resolution_width_1900 = true;}";VIRTUAL_ROOT.CW_resolution_width
+CW_resolution_width_800;CW_resolution_width_800?;Boolean;true | false;;"if (CW_resolution*.p800x600) {CW_resolution_width_800 = true;}";VIRTUAL_ROOT.CW_resolution_width
+CW_sharepoint;CW_sharepoint?;Boolean;true | false;;;VIRTUAL_ROOT.CW
+CW_views;CW_views?;Boolean;true | false;;;VIRTUAL_ROOT.CW
+CW_views*;Which CW_views*?;Enumeration;Table_based | Tree_based | Graph_based;1:3;;CW_views
+CW_wordgenerator;CW_wordgenerator?;Boolean;true | false;;;VIRTUAL_ROOT.CW
+CW_wordgenerator_wordAddIn;CW_wordgenerator_wordAddIn?;Boolean;true | false;;;CW_wordgenerator
+DK_builder;DK_builder?;Boolean;true | false;;;VIRTUAL_ROOT.DK
+DK_merger;DK_merger?;Boolean;true | false;;;VIRTUAL_ROOT.DK
+DK_metamodelling;DK_metamodelling?;Boolean;true | false;;;VIRTUAL_ROOT.DK
+DK_rulelang_editor;DK_rulelang_editor?;Boolean;true | false;;;VIRTUAL_ROOT.DK
+VIRTUAL_ROOT;Which VIRTUAL_ROOT?;Enumeration;ALL | DK | DK_modelconverter | CW_resolution_height | ProprietaryTools | CW_resolution_width | SERVER | DK_sharepoint | CW | PK;1:10;"if (VIRTUAL_ROOT.ALL) {VIRTUAL_ROOT = CW;}if (VIRTUAL_ROOT.ALL) {VIRTUAL_ROOT = DK;}if (VIRTUAL_ROOT.ALL) {VIRTUAL_ROOT = PK;}";true

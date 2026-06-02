@@ -6,26 +6,24 @@
  * with this file, You can obtain one at
  * https://mozilla.org/MPL/2.0/.
  *
- * Contributors:
- *    @author Johannes von Geisau
- *
  * Copyright 2024 Karlsruhe Institute of Technology (KIT)
  * KASTEL - Dependability of Software-intensive Systems
  *******************************************************************************/
 package edu.kit.dopler.common;
 
-import com.google.ortools.sat.*;
+import static edu.kit.dopler.common.CpUtils.CP_ENUM_SEPARATOR;
 
+import com.google.ortools.sat.*;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.ToLongFunction;
 import java.util.stream.Collectors;
 
-import static edu.kit.dopler.common.CpUtils.CP_ENUM_SEPARATOR;
-
 /**
- * Represents the result of encoding a DOPLER model in a constraint programming (CP) model.
- * Provides functionalities to check satisfiability, print configurations, calculate the total number of solutions, and perform anomaly analyses.
+ * Represents the result of encoding a DOPLER model in a constraint programming
+ * (CP) model. Provides functionalities to check satisfiability, print
+ * configurations, calculate the total number of solutions, and perform anomaly
+ * analyses.
  */
 public final class CpEncodingResult {
     private static final int MAX_SOLUTION_COUNT = 20_000;
@@ -36,9 +34,11 @@ public final class CpEncodingResult {
     /**
      * Constructs a new CpEncodingResult object.
      *
-     * @param model     The constraint programming model associated with this result.
-     * @param variables A list of lists containing CP variables for the model.
-     *                  Each inner list represents variables of a single decision.
+     * @param model
+     *            The constraint programming model associated with this result.
+     * @param variables
+     *            A list of lists containing CP variables for the model. Each inner
+     *            list represents variables of a single decision.
      */
     public CpEncodingResult(CpModel model, List<List<IntVar>> variables) {
         this.model = Objects.requireNonNull(model);
@@ -56,7 +56,8 @@ public final class CpEncodingResult {
     /**
      * Determines the satisfiability of the CpEncodingResult.
      *
-     * @return True if the model is satisfiable (has feasible or optimal solutions), false otherwise.
+     * @return True if the model is satisfiable (has feasible or optimal solutions),
+     *         false otherwise.
      */
     public boolean checkSat() {
         CpSolver solver = new CpSolver();
@@ -66,8 +67,9 @@ public final class CpEncodingResult {
     }
 
     /**
-     * Calculates the total number of configurations (solutions) of the CpEncodingResult.
-     * Note: This operation may take a significant amount of time for large models!
+     * Calculates the total number of configurations (solutions) of the
+     * CpEncodingResult. Note: This operation may take a significant amount of time
+     * for large models!
      *
      * @return The total number of solutions found.
      */
@@ -98,9 +100,9 @@ public final class CpEncodingResult {
         return counter.getSolutionCount();
     }
 
-
     /**
-     * Solves the CpEncodingResult and prints one satisfiable configuration, if available.
+     * Solves the CpEncodingResult and prints one satisfiable configuration, if
+     * available.
      */
     public void printOneConfig() {
         CpSolver solver = new CpSolver();
@@ -117,8 +119,8 @@ public final class CpEncodingResult {
     }
 
     /**
-     * Solves the CpEncodingResult and prints all possible configurations.
-     * Note: This operation may take a significant amount of time for large models!
+     * Solves the CpEncodingResult and prints all possible configurations. Note:
+     * This operation may take a significant amount of time for large models!
      */
     public void printAllConfigs() {
         CpSolver solver = new CpSolver();
@@ -159,27 +161,31 @@ public final class CpEncodingResult {
             IntVar variable = vars.getFirst();
             long value = getValue.applyAsLong(variable);
             if (variable instanceof BoolVar) {
-                //bool:
+                // bool:
                 System.out.printf("  %s = %s%n", variable.getName(), value == 1 ? "true" : "false");
             } else {
-                //number:
+                // number:
                 System.out.printf("  %s = %f%n", variable.getName(), CpUtils.scaleLongToDouble(value));
             }
         } else {
-            //enum:
-            String literals = vars.stream().filter(var -> getValue.applyAsLong(var) == 1).map(var -> var.getName().split(CP_ENUM_SEPARATOR)[1]).sorted().collect(Collectors.joining(", "));
+            // enum:
+            String literals = vars.stream()
+                    .filter(var -> getValue.applyAsLong(var) == 1)
+                    .map(var -> var.getName().split(CP_ENUM_SEPARATOR)[1])
+                    .sorted()
+                    .collect(Collectors.joining(", "));
             System.out.printf("  %s = [%s]%n", vars.getFirst().getName().split(CP_ENUM_SEPARATOR)[0], literals);
         }
     }
 
     /**
-     * Prints anomalies in the CpEncodingResult.
-     * Specifically, this method analyzes and outputs dead decision values and false optional decision values.
+     * Prints anomalies in the CpEncodingResult. Specifically, this method analyzes
+     * and outputs dead decision values and false optional decision values.
      * <p>
      * It achieves this by invoking the respective methods:
      * <ul>
-     *     <li>{@link #printDeadDecisionValues()}</li>
-     *     <li>{@link #printFalseOptionalDecisionValues()}</li>
+     * <li>{@link #printDeadDecisionValues()}</li>
+     * <li>{@link #printFalseOptionalDecisionValues()}</li>
      * </ul>
      *
      */
@@ -189,13 +195,13 @@ public final class CpEncodingResult {
     }
 
     /**
-     * Identifies whether there are anomalies in the CpEncodingResult.
-     * Specifically, this method analyzes dead decision values and false optional decision values.
+     * Identifies whether there are anomalies in the CpEncodingResult. Specifically,
+     * this method analyzes dead decision values and false optional decision values.
      * <p>
      * It achieves this by invoking the respective methods:
      * <ul>
-     *     <li>{@link #hasDeadDecisionValues()}</li>
-     *     <li>{@link #hasFalseOptionalDecisionValues()}</li>
+     * <li>{@link #hasDeadDecisionValues()}</li>
+     * <li>{@link #hasFalseOptionalDecisionValues()}</li>
      * </ul>
      *
      * @return True if at least one anomaly was found, false otherwise.
@@ -211,7 +217,7 @@ public final class CpEncodingResult {
         if (this.checkSat()) {
             for (List<IntVar> vars : this.variables) {
                 for (IntVar var : vars) {
-                    if (var instanceof BoolVar) { //number decisions not regarded here
+                    if (var instanceof BoolVar) { // number decisions not regarded here
                         CpModel testModel = this.model.getClone();
                         testModel.addEquality(var, testModel.trueLiteral());
                         CpSolver solver = new CpSolver();
@@ -228,7 +234,8 @@ public final class CpEncodingResult {
     }
 
     /**
-     * Identifies whether there are dead decisions (that can never be true) in the CpEncodingResult.
+     * Identifies whether there are dead decisions (that can never be true) in the
+     * CpEncodingResult.
      *
      * @return True if at least one dead decision was found, false otherwise.
      */
@@ -238,7 +245,7 @@ public final class CpEncodingResult {
         if (this.checkSat()) {
             for (List<IntVar> vars : this.variables) {
                 for (IntVar var : vars) {
-                    if (var instanceof BoolVar) { //number decisions not regarded here
+                    if (var instanceof BoolVar) { // number decisions not regarded here
                         CpModel testModel = this.model.getClone();
                         testModel.addEquality(var, testModel.trueLiteral());
                         CpSolver solver = new CpSolver();
@@ -255,13 +262,14 @@ public final class CpEncodingResult {
     }
 
     /**
-     * Prints false optional decisions (that can never be false) in the CpEncodingResult.
+     * Prints false optional decisions (that can never be false) in the
+     * CpEncodingResult.
      */
     public void printFalseOptionalDecisionValues() {
         if (this.checkSat()) {
             for (List<IntVar> vars : this.variables) {
                 for (IntVar var : vars) {
-                    if (var instanceof BoolVar) { //number decisions not regarded here
+                    if (var instanceof BoolVar) { // number decisions not regarded here
                         CpModel testModel = this.model.getClone();
                         testModel.addEquality(var, testModel.falseLiteral());
                         CpSolver solver = new CpSolver();
@@ -278,9 +286,11 @@ public final class CpEncodingResult {
     }
 
     /**
-     * Identifies whether there are optional decisions (that can never be false) in the CpEncodingResult.
+     * Identifies whether there are optional decisions (that can never be false) in
+     * the CpEncodingResult.
      *
-     * @return True if at least one false optional decision was found, false otherwise.
+     * @return True if at least one false optional decision was found, false
+     *         otherwise.
      */
     public boolean hasFalseOptionalDecisionValues() {
         boolean foundFalseOptionalDecision = false;
@@ -288,7 +298,7 @@ public final class CpEncodingResult {
         if (this.checkSat()) {
             for (List<IntVar> vars : this.variables) {
                 for (IntVar var : vars) {
-                    if (var instanceof BoolVar) { //number decisions not regarded here
+                    if (var instanceof BoolVar) { // number decisions not regarded here
                         CpModel testModel = this.model.getClone();
                         testModel.addEquality(var, testModel.falseLiteral());
                         CpSolver solver = new CpSolver();

@@ -1,0 +1,26 @@
+ID;Question;Type;Range;Cardinality;Constraint/Rule;Visible/relevant if
+ALL;Do you want all standard Tools?;Boolean;false | true;;"if (ALL) { DK = true; } if (ALL) { CW = true; } if (ALL) { PK = true; }";true
+CW;Do you want Product Derivation and Configuration Support?;Boolean;false | true;;;!ALL
+DK;Do you want variability modelling (DecisionKing)?;Boolean;false | true;;;true
+PK;Do you want support for derivation and project management (ProjectKing)?;Boolean;false | true;;;true
+SERVER;Include Dopler Server?;Boolean;false | true;;;true
+ProprietaryTools;Include Proprietary Tools?;Boolean;false | true;;;(isTaken(CW) && CW) || (isTaken(DK) && DK)
+DK_builder;Include consistency checking for variability modelling?;Boolean;false | true;;;DK
+DK_merger;Do you want support for fragmented modelling with model merging?;Boolean;false | true;;;DK
+DK_metamodelling;Do you want to define your own asset types and relationships?;Boolean;false | true;;;DK
+DK_modelconverter;Do you have old DOPLER models?;Boolean;false | true;;;(isTaken(PK) && PK) || (isTaken(DK) && DK)
+DK_rulelang_editor;Do you want a seperate editor with synthax support for the rule language?;Boolean;false | true;;;DK
+DK_sharepoint;Include sharepoint export support for developers?;Boolean;false | true;;;DK || PK
+CW_authentication;Do you need authentication for product derivation?;Boolean;false | true;;;CW
+CW_autogenerate;Do you want ConfigurationWizard to automatically generate configurations after each save?;Boolean;false | true;;;CW
+CW_decisionboard;Include CW Decisionboard?;Boolean;false | true;;;CW
+CW_documenation;Do you want to have documentation integrated in ConfigurationWizard?;Boolean;false | true;;;CW
+CW_flatfilegenerator;Do you want a generator for simple text output?;Boolean;false | true;;;CW
+CW_views;Which of the following visualizations do you want to use during product derivation?;Enumeration;Table-based | Tree-based | Graph-based;1:3;;CW
+CW_requirementsView;Do you want to capture new requirements integrated with the product derivation tool?;Boolean;false | true;;;CW
+CW_sharepoint;Include CW Sharepoint?;Boolean;false | true;;;CW
+CW_wordgenerator;Include MS Word Generator for ConfigurationWizard?;Boolean;false | true;;;CW
+CW_wordgenerator_wordAddIn;Do you want editing support in MS Word to create variable MS Word documents?;Boolean;false | true;;;CW_wordgenerator
+CW_guidance;How should guidance on decisions in ConfigurationWizard be displayed?;Enumeration;After-first-selection | Always;1:1;;CW
+CW_resolution_height;nothing;Double;;;;false
+CW_resolution_width;nothing;Double;;;;false

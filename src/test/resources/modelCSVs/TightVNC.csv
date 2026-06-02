@@ -1,0 +1,5 @@
+ID;Question;Type;Range;Cardinality;Constraint/Rule;Visible/relevant if
+BOpt*;Which BOpt*?;Enumeration;AboutButtonFeat | AltTabButtonFeat | RefreshButtonFeat | CtrlAltDelButtonFeat | RecordButtonFeat | ClipboardButtonFeat | OptionsButtonFeat | DisconnectButtonFeat;1:8;;Opt.BOpt
+MOpt;MOpt?;Boolean;true | false;;;Opt.OptionsMenuFeatures
+MOpt*;Which MOpt*?;Enumeration;OpEncodingFeat | OpCompressionFeat | OpJPEGqualityFeat | OpCursorShapeFeat | OpCopyRectFeat | OpRestrictedColorsFeat | OpMouse23Feat | OpViewFeat | OpShareFeat;1:9;;MOpt
+Opt;Which Opt?;Enumeration;OptionsMenuFeatures | BOpt | ClipboardFeat | RecordingFeat;1:4;"if (BOpt*.RecordButtonFeat) {Opt = RecordingFeat;}if (BOpt*.OptionsButtonFeat) {Opt = OptionsMenuFeatures;}if (BOpt*.ClipboardButtonFeat) {Opt = ClipboardFeat;}";true

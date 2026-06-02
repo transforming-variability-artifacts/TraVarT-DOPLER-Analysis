@@ -1,0 +1,4 @@
+ID;Question;Type;Range;Cardinality;Constraint/Rule;Visible/relevant if
+Algorithms;Algorithms?;Boolean;true | false;;;true
+Algorithms*;Which Algorithms*?;Enumeration;Number | Cycle;1:2;if (Algorithms*.Cycle) {Edges = Directed;};Algorithms
+Edges;Which Edges?;Enumeration;Directed | Undirected;1:1;;true

@@ -6,7 +6,7 @@
  * with this file, You can obtain one at
  * https://mozilla.org/MPL/2.0/.
  *
- * Contributors: 
+ * Contributors:
  * 	@author David Kowal
  * 	@author Kevin Feichtinger
  *
@@ -110,7 +110,7 @@ rangeItem
     : IDENTIFIER
     | specialCharacter
     | expression
-    | subrange 
+    | subrange
     | cardinality
     | QUESTION
     | header
@@ -184,7 +184,7 @@ decisionType
 drule
     : DQ drule DQ
     | drule drule
-    | IF LPAREN? expression RPAREN? LBRACE (action SEMICOLON?)+ RBRACE 
+    | IF LPAREN? expression RPAREN? LBRACE (action SEMICOLON?)+ RBRACE
     ;
 
 action

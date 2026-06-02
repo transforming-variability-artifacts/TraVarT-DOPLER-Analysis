@@ -1,0 +1,9 @@
+ID;Question;Type;Range;Cardinality;Constraint/Rule;Visible/relevant if
+CV*;Which CV*?;Enumeration;Document_Management | Claims_Management | Customer_Management;1:3;;VIRTUAL_ROOT.CV
+CV_Claims*;Which CV_Claims*?;Enumeration;journal | task_manager;1:2;;VIRTUAL_ROOT.CV_Claims
+CV_Customer*;Which CV_Customer*?;Enumeration;mail | phone;1:2;;VIRTUAL_ROOT.CV_Customer
+CV_Documents*;Which CV_Documents*?;Enumeration;scan_new | import_external | archive | read_existing;1:4;;VIRTUAL_ROOT.CV_Documents
+SV*;Which SV*?;Enumeration;Particular_Packages | Solution;1:1;;VIRTUAL_ROOT.SV
+SV_Particular_Package*;Which SV_Particular_Package*?;Enumeration;Organizer | Label_Printing | Else | Docs | Standard_Letter;1:5;;VIRTUAL_ROOT.SV_Particular_Package
+SV_Solution*;Which SV_Solution*?;Enumeration;BMD | BMDCRM;1:1;;VIRTUAL_ROOT.SV_Solution
+VIRTUAL_ROOT;Which VIRTUAL_ROOT?;Enumeration;SV_Solution | CV_Documents | CV_Claims | SV | CV_Customer | CV | SV_Particular_Package;1:7;;true

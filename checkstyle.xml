@@ -12,18 +12,51 @@
     <module name="TreeWalker">
         <module name="Indentation">
             <property name="basicOffset" value="4"/>
-            <property name="tabWidth" value="4"/>
         </module>
 
         <module name="MethodName"/>
-        <module name="UnusedImports"/>
+        <module name="TypeName"/>
+        <module name="MemberName"/>
+        <module name="ParameterName"/>
+        <module name="LocalVariableName"/>
+        <module name="ConstantName"/>
+
         <module name="NestedForDepth">
             <property name="max" value="4"/>
         </module>
         <module name="NestedIfDepth">
             <property name="max" value="4"/>
         </module>
+
+        <module name="NeedBraces"/>
+        <module name="OneStatementPerLine"/>
+
+        <module name="ModifierOrder"/>
+
+        <module name="UnusedImports"/>
+        <module name="AvoidStarImport"/>
+
+        <module name="EmptyBlock"/>
+
+<!--        <module name="ReturnCount">
+            <property name="max" value="3"/>
+        </module>
+        <module name="CyclomaticComplexity">
+            <property name="max" value="10"/>
+        </module>
+        <module name="MethodLength">
+            <property name="max" value="80"/>
+        </module>
+        <module name="ParameterNumber">
+            <property name="max" value="6"/>
+        </module>-->
+
+        <module name="EqualsHashCode"/>
+
+        <module name="WhitespaceAfter"/>
+        <module name="NoWhitespaceBefore"/>
+        <module name="OperatorWrap"/>
+        <module name="SeparatorWrap"/>
     </module>
 
 </module>
-

@@ -6,25 +6,30 @@
  * with this file, You can obtain one at
  * https://mozilla.org/MPL/2.0/.
  *
- * Contributors: 
- *    @author David Kowal
- *    @author Kevin Feichtinger
- *
  * Copyright 2024 Karlsruhe Institute of Technology (KIT)
  * KASTEL - Dependability of Software-intensive Systems
  *******************************************************************************/
-
 package edu.kit.dopler.io.antlr;
 
 import edu.kit.dopler.io.antlr.resources.DoplerParser;
 import edu.kit.dopler.io.antlr.resources.DoplerParser.*;
-import edu.kit.dopler.model.*;
-import edu.kit.dopler.model.Decision.DecisionType;
-import edu.kit.dopler.model.Enumeration;
-import org.antlr.v4.runtime.tree.TerminalNode;
-
+import edu.kit.dopler.model.Dopler;
+import edu.kit.dopler.model.actions.*;
+import edu.kit.dopler.model.basic.Enumeration;
+import edu.kit.dopler.model.basic.EnumerationLiteral;
+import edu.kit.dopler.model.basic.Rule;
+import edu.kit.dopler.model.decisions.BooleanDecision;
+import edu.kit.dopler.model.decisions.Decision.DecisionType;
+import edu.kit.dopler.model.decisions.EnumerationDecision;
+import edu.kit.dopler.model.decisions.IDecision;
+import edu.kit.dopler.model.decisions.NumberDecision;
+import edu.kit.dopler.model.expressions.*;
+import edu.kit.dopler.model.values.BooleanValue;
+import edu.kit.dopler.model.values.DoubleValue;
+import edu.kit.dopler.model.values.StringValue;
 import java.util.*;
 import java.util.stream.Collectors;
+import org.antlr.v4.runtime.tree.TerminalNode;
 
 public class DoplerExpressionParser extends DecisionParserBase {
     // Stack to traverse Expressions
@@ -67,10 +72,8 @@ public class DoplerExpressionParser extends DecisionParserBase {
 
     private void setDecisionValues() {
         IDecision<?> currentDecision = findDecisionByID(currentID);
-        if (currentDecision == null)
-            return;
-        if (currentVisibilityCondition != null)
-            currentDecision.setVisibilityCondition(currentVisibilityCondition);
+        if (currentDecision == null) return;
+        if (currentVisibilityCondition != null) currentDecision.setVisibilityCondition(currentVisibilityCondition);
         currentRules.forEach(currentDecision::addRule);
         resetValues();
     }
@@ -88,7 +91,8 @@ public class DoplerExpressionParser extends DecisionParserBase {
             currentID = ctx.IDENTIFIER().getText();
             idSet = true;
         } else {
-            expressionStack.push(new DecisionValueCallExpression(findDecisionByID(ctx.IDENTIFIER().getText())));
+            expressionStack.push(new DecisionValueCallExpression(
+                    findDecisionByID(ctx.IDENTIFIER().getText())));
             IDecision<?> decision = findDecisionByID(ctx.IDENTIFIER().getText());
             if (decision != null) {
                 expressionStack.push(new DecisionValueCallExpression(decision));
@@ -132,8 +136,7 @@ public class DoplerExpressionParser extends DecisionParserBase {
             }
         }
 
-        if (!expressionStack.isEmpty())
-            currentVisibilityCondition = expressionStack.pop();
+        if (!expressionStack.isEmpty()) currentVisibilityCondition = expressionStack.pop();
     }
 
     @Override
@@ -151,40 +154,43 @@ public class DoplerExpressionParser extends DecisionParserBase {
             if (findDecisionByID(decisionID.getText()) != null) {
                 expressionStack.push(new DecisionValueCallExpression(findDecisionByID(decisionID.getText())));
             } else if (findEnumerationLiteralByName(decisionID.getText()) != null) {
-                expressionStack
-                        .push(new EnumeratorLiteralExpression(findEnumerationLiteralByName(decisionID.getText())));
+                expressionStack.push(
+                        new EnumeratorLiteralExpression(findEnumerationLiteralByName(decisionID.getText())));
             }
         }
     }
 
     @Override
     public void enterBooleanLiteralExpression(BooleanLiteralExpressionContext ctx) {
-        expressionStack
-                .push(new BooleanLiteralExpression(Boolean.parseBoolean(ctx.BooleanLiteralExpression().getText())));
+        expressionStack.push(new BooleanLiteralExpression(
+                Boolean.parseBoolean(ctx.BooleanLiteralExpression().getText())));
     }
 
     @Override
     public void enterStringLiteralExpression(StringLiteralExpressionContext ctx) {
-        expressionStack.push(new StringLiteralExpression(ctx.StringLiteralExpression().getText()));
+        expressionStack.push(
+                new StringLiteralExpression(ctx.StringLiteralExpression().getText()));
     }
 
     @Override
     public void enterDoubleLiteralExpression(DoubleLiteralExpressionContext ctx) {
-        expressionStack.push(new DoubleLiteralExpression(Double.parseDouble(ctx.DoubleLiteralExpression().getText())));
+        expressionStack.push(new DoubleLiteralExpression(
+                Double.parseDouble(ctx.DoubleLiteralExpression().getText())));
     }
 
     @Override
     public void enterEnumerationLiteralExpression(EnumerationLiteralExpressionContext ctx) {
         String[] enumerationArray = ctx.EnumerationLiteralExpression().getText().split("\\.");
-        if (enumerationArray.length < 2)
-            return;
+        if (enumerationArray.length < 2) return;
         IDecision<?> decision = findDecisionByID(enumerationArray[0]);
         if (decision instanceof EnumerationDecision enumerationDecision) {
             for (Enumeration enumeration : dopler.getEnumSet()) {
                 Optional<EnumerationLiteral> enumerationLiteral = enumeration.getEnumerationLiterals().stream()
-                        .filter(e -> e.getValue().equals(enumerationArray[1])).findFirst();
+                        .filter(e -> e.getValue().equals(enumerationArray[1]))
+                        .findFirst();
                 if (enumerationLiteral.isPresent()) {
-                    expressionStack.push(new Equals(new DecisionValueCallExpression(enumerationDecision),
+                    expressionStack.push(new Equals(
+                            new DecisionValueCallExpression(enumerationDecision),
                             new EnumeratorLiteralExpression(enumerationLiteral.get())));
                     break;
                 }
@@ -195,7 +201,6 @@ public class DoplerExpressionParser extends DecisionParserBase {
     @Override
     public void enterDrule(DruleContext ctx) {
         expressionStack.clear();
-
     }
 
     @Override
@@ -216,8 +221,8 @@ public class DoplerExpressionParser extends DecisionParserBase {
             if (!identifier.isEmpty()) {
                 IDecision<?> decision = findDecisionByID(identifier);
                 if (decision != null && decision.getDecisionType() == DecisionType.ENUM) {
-                    currentActions
-                            .add(new Allows((EnumerationDecision) decision, new StringValue(enumerationArray[1])));
+                    currentActions.add(
+                            new Allows((EnumerationDecision) decision, new StringValue(enumerationArray[1])));
                 }
             }
         }
@@ -231,8 +236,8 @@ public class DoplerExpressionParser extends DecisionParserBase {
             if (!identifier.isEmpty()) {
                 IDecision<?> decision = findDecisionByID(identifier);
                 if (decision != null && decision.getDecisionType() == DecisionType.ENUM) {
-                    currentActions
-                            .add(new DisAllows((EnumerationDecision) decision, new StringValue(enumerationArray[1])));
+                    currentActions.add(
+                            new DisAllows((EnumerationDecision) decision, new StringValue(enumerationArray[1])));
                 }
             }
         }
@@ -245,7 +250,8 @@ public class DoplerExpressionParser extends DecisionParserBase {
         }
         String identifier = ctx.IDENTIFIER().getText();
         List<TerminalNode> leafs = ctx.children.subList(2, ctx.children.size()).stream()
-                .flatMap(child -> getAllTerminalNodes(child).stream()).toList();
+                .flatMap(child -> getAllTerminalNodes(child).stream())
+                .toList();
         String value = leafs.stream().map(TerminalNode::getText).collect(Collectors.joining());
         if (!identifier.isEmpty()) {
             IDecision<?> decision = findDecisionByID(identifier);
@@ -261,7 +267,8 @@ public class DoplerExpressionParser extends DecisionParserBase {
         if (!identifier.isEmpty()) {
             IDecision<?> decision = findDecisionByID(ctx.IDENTIFIER().getText());
             if (decision != null && decision.getDecisionType() == DecisionType.BOOLEAN) {
-                boolean value = Boolean.parseBoolean(ctx.BooleanLiteralExpression().getText());
+                boolean value =
+                        Boolean.parseBoolean(ctx.BooleanLiteralExpression().getText());
                 currentActions.add(new BooleanEnforce((BooleanDecision) decision, new BooleanValue(value)));
             }
         }
@@ -320,5 +327,4 @@ public class DoplerExpressionParser extends DecisionParserBase {
         IExpression left = expressionStack.pop();
         expressionStack.push(new LessThan(left, right));
     }
-
 }

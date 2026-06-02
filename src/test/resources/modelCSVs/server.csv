@@ -1,0 +1,4 @@
+ID;Question;Type;Range;Cardinality;Constraint/Rule;Visible/relevant if
+FileSystem;Which FileSystem?;Enumeration;NTFS | APFS | EXT4;1:3;"if (OperatingSystem.Windows) {FileSystem = NTFS;}if (OperatingSystem.macOS) {FileSystem = APFS;}";true
+OperatingSystem;Which OperatingSystem?;Enumeration;Windows | macOS | Debian;1:1;;true
+Logging;Logging?;Boolean;true | false;;;true

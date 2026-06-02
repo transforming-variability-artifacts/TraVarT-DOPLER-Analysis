@@ -1,0 +1,2 @@
+standard_value_test1_c1.csvID;Question;Type;Range;Cardinality;Constraint/Rule;Visible/relevant if
+A;nothing;Double;0-100;;;true
