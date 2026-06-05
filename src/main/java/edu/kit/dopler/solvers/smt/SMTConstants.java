@@ -11,10 +11,25 @@
  *******************************************************************************/
 package edu.kit.dopler.solvers.smt;
 
+import java.util.Objects;
 import org.sosy_lab.java_smt.SolverContextFactory;
 
-public class SMTConstants {
+public final class SMTConstants {
     public static final String TAKEN_SUFFIX = "_TAKEN";
     public static final String VALUE_SUFFIX = "_VALUE";
-    public static final SolverContextFactory.Solvers DEFAULT_SOLVER = SolverContextFactory.Solvers.CVC5;
+
+    private static SolverContextFactory.Solvers defaultSolver = SolverContextFactory.Solvers.CVC5;
+
+    private SMTConstants() {
+        throw new IllegalStateException("Utility class can't be instantiated");
+    }
+
+    public static SolverContextFactory.Solvers getDefaultModel() {
+        return defaultSolver;
+    }
+
+    public static void setDefaultModel(SolverContextFactory.Solvers solver) {
+        Objects.requireNonNull(solver, "Default solver cannot be null");
+        defaultSolver = solver;
+    }
 }

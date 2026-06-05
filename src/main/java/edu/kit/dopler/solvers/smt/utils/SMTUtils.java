@@ -31,12 +31,12 @@ public final class SMTUtils {
     }
 
     /**
-     * Creates a new SMT solver context using the default solver specified in {@link SMTConstants#DEFAULT_SOLVER}.
+     * Creates a new SMT solver context using the default solver specified in {@link SMTConstants#getDefaultModel}.
      *
      * @return An initialized {@link SolverContext} ready for use.
      */
     public static SolverContext createSolverContext() {
-        return createSolverContext(SMTConstants.DEFAULT_SOLVER);
+        return createSolverContext(SMTConstants.getDefaultModel());
     }
 
     /**

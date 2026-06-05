@@ -11,6 +11,8 @@
  *******************************************************************************/
 package edu.kit.dopler.solvers.ilp;
 
+import java.util.Objects;
+
 public final class ILPConstants {
 
     public static final String TAKEN_SUFFIX = "_TAKEN";
@@ -20,10 +22,19 @@ public final class ILPConstants {
     // Seems to at least work for all test cases
     public static final double FALLBACK_BIG_M = 10000.0;
 
-    public static final ILPModels DEFAULT_MODEL = ILPModels.CBC;
+    private static ILPModels defaultModel = ILPModels.CBC;
 
     private ILPConstants() {
         throw new IllegalStateException("Utility class can't be instantiated");
+    }
+
+    public static ILPModels getDefaultModel() {
+        return defaultModel;
+    }
+
+    public static void setDefaultModel(ILPModels model) {
+        Objects.requireNonNull(model, "Default model cannot be null");
+        defaultModel = model;
     }
 
     public enum ILPModels {
