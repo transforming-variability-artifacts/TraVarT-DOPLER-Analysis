@@ -65,7 +65,7 @@ public final class SMTAllSatSolver {
      * @return The total number of unique, valid configurations. Returns 0 if the
      * model is UNSAT and if detected by the heuristics Infinite for continues Real-valued domains or unbound Strings.
      */
-    public static ConfigResult getAmountOfConfigs(final Dopler dopler, boolean useHeuristic) {
+    public static ConfigResult countConfigurations(final Dopler dopler, boolean useHeuristic) {
         int configCount = 0;
 
         try (SMTContext context = SMTContext.create(SMTUtils.createSolverContext(), true)) {

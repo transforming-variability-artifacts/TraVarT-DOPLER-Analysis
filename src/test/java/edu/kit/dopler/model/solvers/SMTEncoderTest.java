@@ -49,7 +49,7 @@ class SMTEncoderTest {
     void testSATModelsConfigCount(Path csvFile, SMTAllSatSolver.ConfigResult expectedConfigCount) {
         Dopler dopler = assertDoesNotThrow(() -> readDOPLERModelFromFile(csvFile), "DOPLER model creation failed!");
 
-        SMTAllSatSolver.ConfigResult configCount = SMTAllSatSolver.getAmountOfConfigs(dopler, true);
+        SMTAllSatSolver.ConfigResult configCount = SMTAllSatSolver.countConfigurations(dopler, true);
         assertEquals(
                 expectedConfigCount,
                 configCount,

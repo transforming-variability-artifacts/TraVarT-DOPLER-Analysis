@@ -17,8 +17,8 @@ import com.google.ortools.linearsolver.MPVariable;
 import edu.kit.dopler.model.Dopler;
 import edu.kit.dopler.solvers.ilp.ILPContext;
 import edu.kit.dopler.solvers.ilp.encoders.ILPGlobalConstraintEncoder;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public final class ILPSolverUtils {
 
@@ -45,7 +45,7 @@ public final class ILPSolverUtils {
      * Continuous variables are optimized/solved relative to each discrete configuration,
      * but do not define unique configurations themselves.
      * @param dopler The DOPLER model to check.
-     * @return The total number of valid configurations, or -1 if the model is unbounded.
+     * @return The total number of valid configurations.
      */
     public static int countConfigurations(final Dopler dopler) {
         int count = 0;
@@ -54,17 +54,10 @@ public final class ILPSolverUtils {
             ILPGlobalConstraintEncoder.encodeToILP(dopler, context);
 
             MPSolver solver = context.solver();
-            MPVariable[] allCoreVars = context.getCoreVars().values().toArray(new MPVariable[0]);
+            MPVariable[] boolVars = context.getCoreBoolVars().values().toArray(new MPVariable[0]);
+            MPVariable[] realVars = context.getCoreRealVars().values().toArray(new MPVariable[0]);
 
-            // Only create exclusion based on discrete decisions.
-            // TODO: Add support for Reals later, currently under counts.
-            List<MPVariable> boolVarsList = new ArrayList<>();
-            for (MPVariable var : allCoreVars) {
-                if (isBooleanBound(var)) {
-                    boolVarsList.add(var);
-                }
-            }
-            MPVariable[] boolVars = boolVarsList.toArray(new MPVariable[0]);
+            double M = ILPLogic.getBigM(realVars);
 
             while (true) {
                 MPSolver.ResultStatus status = solver.solve();
@@ -76,32 +69,58 @@ public final class ILPSolverUtils {
                 count++;
 
                 boolean[] selected = new boolean[boolVars.length];
-                int falseCount = 0;
+                int trueCount = 0;
+
+                Map<MPVariable, Double> realVarSolutions = new HashMap<>();
+                for (MPVariable rVar : realVars) {
+                    realVarSolutions.put(rVar, rVar.solutionValue());
+                }
 
                 for (int i = 0; i < boolVars.length; i++) {
                     selected[i] = boolVars[i].solutionValue() > 0.5;
-                    if (!selected[i]) {
-                        falseCount++;
+                    if (selected[i]) {
+                        trueCount++;
                     }
                 }
 
-                // Sum(Vars_true) - Sum(Vars_false) <= Count(Vars_true) - 1
-                MPConstraint exclude =
-                        solver.makeConstraint(Double.NEGATIVE_INFINITY, boolVars.length - 1 - falseCount);
+                // The exclusion constraint ensures that at least one decision is different
+                // Sum(Vars_true) - Sum(Vars_false) - Sum(diff_reals) <= Count(Vars_true) - 1
+                MPConstraint exclude = solver.makeConstraint(Double.NEGATIVE_INFINITY, trueCount - 1);
 
+                // Exclude exact boolean matches
                 for (int i = 0; i < boolVars.length; i++) {
                     exclude.setCoefficient(boolVars[i], selected[i] ? 1 : -1);
                 }
+
+                // Exclude exact real matches +- Epsilon
+                /*
+                                for (MPVariable rVar : realVars) {
+                                    double val = realVarSolutions.get(rVar);
+
+                                    // greater_var = 1 => rVar >= val + EPSILON
+                                    // Formula: rVar - M * greater_var >= val + EPSILON - M
+                                    MPVariable greaterVar = context.createAuxBoolVar("greater_" + rVar.name() + "_c" + count);
+                                    MPConstraint cGreater =
+                                            solver.makeConstraint(val + ILPConstants.EPSILON - M, Double.POSITIVE_INFINITY);
+                                    cGreater.setCoefficient(rVar, 1);
+                                    cGreater.setCoefficient(greaterVar, -M);
+
+                                    // lesser_var = 1 => rVar <= val - EPSILON
+                                    // Formula: rVar + M * lesser_var <= val - EPSILON + M
+                                    MPVariable lesserVar = context.createAuxBoolVar("lesser_" + rVar.name() + "_c" + count);
+                                    MPConstraint cLesser =
+                                            solver.makeConstraint(Double.NEGATIVE_INFINITY, val - ILPConstants.EPSILON + M);
+                                    cLesser.setCoefficient(rVar, 1);
+                                    cLesser.setCoefficient(lesserVar, M);
+
+                                    // Add the delta bounds to the exclusion constraint.
+                                    exclude.setCoefficient(greaterVar, -1);
+                                    exclude.setCoefficient(lesserVar, -1);
+                                }
+                */
             }
         }
 
         return count;
-    }
-
-    /**
-     * Helper method to identify if a variable is boolean.
-     */
-    public static boolean isBooleanBound(MPVariable v) {
-        return v.lb() >= 0.0 && v.ub() <= 1.0;
     }
 }
