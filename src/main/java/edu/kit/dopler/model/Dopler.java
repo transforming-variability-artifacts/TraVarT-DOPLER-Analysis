@@ -124,7 +124,7 @@ public class Dopler {
         // 4. Ensure logical consistency for isTaken literals
         enforceIsTakenConsistencyInCp(isTakenVars, model, decisionVars, isTakenConditions);
 
-        return new CpEncodingResult(model, decisionVars.values().stream().toList());
+        return new CpEncodingResult(model, decisionVars.values().stream().toList(), isTakenVars, decisionVars);
     }
 
     private void initializeTakenMapsInCp(

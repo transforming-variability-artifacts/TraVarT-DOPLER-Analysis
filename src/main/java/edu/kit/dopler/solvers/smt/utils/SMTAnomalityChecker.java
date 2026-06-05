@@ -12,9 +12,13 @@
 package edu.kit.dopler.solvers.smt.utils;
 
 import edu.kit.dopler.model.Dopler;
+import edu.kit.dopler.model.basic.EnumerationLiteral;
+import edu.kit.dopler.model.decisions.Decision.DecisionType;
+import edu.kit.dopler.model.decisions.EnumerationDecision;
 import edu.kit.dopler.model.decisions.IDecision;
 import edu.kit.dopler.solvers.shared.AnomalyReport;
 import edu.kit.dopler.solvers.shared.SolverUtils;
+import edu.kit.dopler.solvers.shared.ValueAnomaly;
 import edu.kit.dopler.solvers.smt.SMTConstants;
 import edu.kit.dopler.solvers.smt.SMTContext;
 import edu.kit.dopler.solvers.smt.encoders.SMTGlobalConstraintEncoder;
@@ -23,13 +27,11 @@ import java.util.Collections;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sosy_lab.java_smt.api.BooleanFormula;
-import org.sosy_lab.java_smt.api.BooleanFormulaManager;
-import org.sosy_lab.java_smt.api.ProverEnvironment;
-import org.sosy_lab.java_smt.api.SolverException;
+import org.sosy_lab.java_smt.api.*;
+import org.sosy_lab.java_smt.api.NumeralFormula.RationalFormula;
 
 /**
- * Detects logical anomalies (False Optionals, Dead Decisions) using SMT constraints.
+ * Detects logical anomalies within a DOPLER model using SMT constraints.
  */
 public final class SMTAnomalityChecker {
 
@@ -41,164 +43,150 @@ public final class SMTAnomalityChecker {
 
     /**
      * Detects logical anomalies in a DOPLER model.
-     * <p>
-     * It aggregates multiple anomaly checks (Dead Decisions, False Optionals) and
-     * returns a single report detailing exactly which decisions are anomalous.
-     * </p>
+     * Evaluates Dead/False Optional decisions and Dead/False Optional decision values.
      *
      * @param dopler The DOPLER model to analyze.
-     * @return An {@link AnomalyReport} containing the results of the anomaly detection.
+     * @return The {@link AnomalyReport}.
      */
     public static AnomalyReport detectAnomalies(final Dopler dopler) {
-        try (SMTContext context = SMTContext.create(SMTUtils.createSolverContext())) {
+        try (SMTContext context = SMTContext.create(SMTUtils.createSolverContext(), true)) {
             SMTGlobalConstraintEncoder.encodeToSMT(dopler, context);
             ProverEnvironment prover = context.prover();
             BooleanFormulaManager bfm = context.fm().getBooleanFormulaManager();
 
-            // Are there any valid configurations?
+            // If the base model is UNSAT, anomaly checks are impossible.
             if (prover.isUnsat()) {
-                LOGGER.warn(
-                        "The DOPLER model is UNSATISFIABLE. It has 0 valid configurations. Cannot perform anomaly checks.");
-                return new AnomalyReport(true, Collections.emptyList(), Collections.emptyList());
+                LOGGER.warn("The DOPLER model is UNSATISFIABLE. Cannot perform anomaly checks.");
+                return AnomalyReport.empty(true);
             }
 
-            List<IDecision<?>> dead = findDeadDecisions(dopler, bfm, prover, context);
-            List<IDecision<?>> falseOptional = findFalseOptionalDecisions(dopler, bfm, prover, context);
-
-            return new AnomalyReport(false, dead, falseOptional);
+            return findAnomalies(dopler, context, prover, bfm);
 
         } catch (SolverException | InterruptedException e) {
             LOGGER.error("SMT Error during anomaly detection: {}", e.getMessage(), e);
-            // Treat solver failures as an unsat/broken base model
-            return new AnomalyReport(true, Collections.emptyList(), Collections.emptyList());
+            return AnomalyReport.empty(true);
         } catch (Exception e) {
             LOGGER.error("Unexpected error during anomaly detection: {}", e.getMessage(), e);
-            return new AnomalyReport(true, Collections.emptyList(), Collections.emptyList());
+            return AnomalyReport.empty(true);
         }
     }
 
-    /**
-     * Checks the model for "False Optional" decisions.
-     * <p>
-     * A decision is "False Optional" if it appears to the user as optional, but the
-     * rules force it to be taken in every valid configuration.
-     * </p>
-     * <p>
-     * SMT Logic:<br/>
-     * Is there any valid configuration where this decision is not taken?
-     * If the solver returns nUNSATISFIABLE, skipping the decision violates the rules,
-     * therefore the decision is mandatory.
-     * </p>
-     *
-     * @param dopler The DOPLER model to analyze.
-     * @return A list of decisions identified as False Optional.
-     * @throws IllegalStateException if the base model is UNSATISFIABLE.
-     */
-    public static List<IDecision<?>> findFalseOptionalDecisions(final Dopler dopler) {
-        try (SMTContext context = SMTContext.create(SMTUtils.createSolverContext())) {
-            SMTGlobalConstraintEncoder.encodeToSMT(dopler, context);
-            ProverEnvironment prover = context.prover();
-            BooleanFormulaManager bfm = context.fm().getBooleanFormulaManager();
-
-            if (prover.isUnsat()) {
-                throw new IllegalStateException("Base model is UNSAT. Cannot perform false optional decision checks.");
-            }
-
-            return findFalseOptionalDecisions(dopler, bfm, prover, context);
-
-        } catch (SolverException | InterruptedException e) {
-            LOGGER.error("SMT Error in findFalseOptionalDecisions: {}", e.getMessage(), e);
-            throw new RuntimeException("SMT check failed", e);
-        }
-    }
-
-    private static List<IDecision<?>> findFalseOptionalDecisions(
-            final Dopler dopler, BooleanFormulaManager bfm, ProverEnvironment prover, SMTContext context)
-            throws SolverException, InterruptedException {
-
-        List<IDecision<?>> anomalousDecisions = new ArrayList<>();
-
-        for (IDecision<?> d : dopler.getDecisions()) {
-            BooleanFormula isTaken =
-                    (BooleanFormula) context.getVar(SolverUtils.toStringConst(d) + SMTConstants.TAKEN_SUFFIX);
-
-            prover.push();
-
-            // Force this decision not to be taken
-            prover.addConstraint(bfm.not(isTaken));
-
-            // If no valid configuration exists under this assumption, it must be mandatory.
-            if (prover.isUnsat()) {
-                LOGGER.trace("Anomaly -> False Optional Decision detected: {}", d.getDisplayId());
-                anomalousDecisions.add(d);
-            }
-
-            prover.pop();
-        }
-
-        return anomalousDecisions;
-    }
-
-    /**
-     * Checks the model for "Dead" decisions.
-     * <p>
-     * A decision is "Dead" if there is no possible way to choose it. Across all
-     * valid configurations, the rules or visibility conditions prevent it from ever
-     * becoming active.
-     * </p>
-     * <p>
-     * SMT Logic:<br/>
-     * Is there any valid configuration where this decision is taken?
-     * If the solver returns UNSATISFIABLE, activating this decision contradicts the model's rules,
-     * making the decision unreachable.
-     * </p>
-     *
-     * @param dopler The DOPLER model to analyze.
-     * @return A list of decisions identified as Dead.
-     * @throws IllegalStateException if the base model is UNSATISFIABLE.
-     */
-    public static List<IDecision<?>> findDeadDecisions(final Dopler dopler) {
-        try (SMTContext context = SMTContext.create(SMTUtils.createSolverContext())) {
-            SMTGlobalConstraintEncoder.encodeToSMT(dopler, context);
-            ProverEnvironment prover = context.prover();
-            BooleanFormulaManager bfm = context.fm().getBooleanFormulaManager();
-
-            if (prover.isUnsat()) {
-                throw new IllegalStateException("Base model is UNSAT. Cannot perform dead decision checks.");
-            }
-
-            return findDeadDecisions(dopler, bfm, prover, context);
-
-        } catch (SolverException | InterruptedException e) {
-            LOGGER.error("SMT Error in findDeadDecisions: {}", e.getMessage(), e);
-            throw new RuntimeException("SMT check failed", e);
-        }
-    }
-
-    private static List<IDecision<?>> findDeadDecisions(
-            final Dopler dopler, BooleanFormulaManager bfm, ProverEnvironment prover, SMTContext context)
+    private static AnomalyReport findAnomalies(
+            Dopler dopler, SMTContext context, ProverEnvironment prover, BooleanFormulaManager bfm)
             throws SolverException, InterruptedException {
 
         List<IDecision<?>> deadDecisions = new ArrayList<>();
+        List<IDecision<?>> falseOptionalDecisions = new ArrayList<>();
+        List<ValueAnomaly> deadValues = new ArrayList<>();
+        List<ValueAnomaly> falseOptionalValues = new ArrayList<>();
+
+        FormulaManager fm = context.fm();
 
         for (IDecision<?> d : dopler.getDecisions()) {
-            BooleanFormula isTaken =
-                    (BooleanFormula) context.getVar(SolverUtils.toStringConst(d) + SMTConstants.TAKEN_SUFFIX);
+            String dName = SolverUtils.toStringConst(d);
+            BooleanFormula isTaken = (BooleanFormula) context.getVar(dName + SMTConstants.TAKEN_SUFFIX);
 
-            prover.push();
-
-            // Force this decision to be taken
-            prover.addConstraint(isTaken);
-
-            // If no valid configuration allows this, the decision is dead.
-            if (prover.isUnsat()) {
-                LOGGER.trace("Anomaly -> Dead Decision detected: {}", d.getDisplayId());
+            // Check Dead Decision: Does forcing the decision to be taken result in an invalid model?
+            if (isUnsatUnderConstraint(prover, isTaken)) {
                 deadDecisions.add(d);
+                continue; // A dead decision cannot have valid values.
             }
 
+            // Check False Optional Decision: Does omitting the decision result in an invalid model?
+            if (isUnsatUnderConstraint(prover, bfm.not(isTaken))) {
+                falseOptionalDecisions.add(d);
+            }
+
+            // Evaluate Decision Values
+            // Assume the decision is taken to evaluate if its values are dead or forced.
+            prover.push();
+            prover.addConstraint(isTaken);
+
+            if (d.getDecisionType() == DecisionType.ENUM) {
+                EnumerationDecision ed = (EnumerationDecision) d;
+                for (EnumerationLiteral lit : ed.getEnumeration().getEnumerationLiterals()) {
+                    BooleanFormula litVar = (BooleanFormula) context.getVar(dName + "_" + lit.getValue());
+
+                    // If forcing this literal results in UNSAT, it's a dead value.
+                    if (isUnsatUnderConstraint(prover, litVar)) {
+                        deadValues.add(new ValueAnomaly(d, lit));
+                    }
+                    // If forbidding this literal results in UNSAT, it must be chosen.
+                    else if (isUnsatUnderConstraint(prover, bfm.not(litVar))) {
+                        falseOptionalValues.add(new ValueAnomaly(d, lit));
+                    }
+                }
+            } else if (d.getDecisionType() == DecisionType.BOOLEAN) {
+                BooleanFormula valVar = (BooleanFormula) context.getVar(dName + SMTConstants.VALUE_SUFFIX);
+
+                // Since the decision is forced to be taken, the other value can't be optional.
+                if (isUnsatUnderConstraint(prover, valVar)) {
+                    // If setting to true breaks the model, true is dead and false is implicitly forced.
+                    deadValues.add(new ValueAnomaly(d, true));
+                    falseOptionalValues.add(new ValueAnomaly(d, false));
+                } else if (isUnsatUnderConstraint(prover, bfm.not(valVar))) {
+                    // If setting to false breaks the model, false is dead and true is implicitly forced.
+                    deadValues.add(new ValueAnomaly(d, false));
+                    falseOptionalValues.add(new ValueAnomaly(d, true));
+                }
+            } else if (d.getDecisionType() == DecisionType.NUMBER) {
+                RationalFormula valVar = (RationalFormula) context.getVar(dName + SMTConstants.VALUE_SUFFIX);
+                RationalFormulaManager rfm = fm.getRationalFormulaManager();
+
+                // Needed to generate the model.
+                if (prover.isUnsat()) {
+                    throw new IllegalStateException("Model must be valid");
+                }
+                // Numbers have infinite domains. Check if forbidding the current value breaks the model.
+                // If it does, it's the only valid number.
+                try (Model model = prover.getModel()) {
+                    Object val = model.evaluate(valVar);
+                    if (val != null) {
+                        RationalFormula valFormula = rfm.makeNumber(val.toString());
+                        if (isUnsatUnderConstraint(prover, bfm.not(rfm.equal(valVar, valFormula)))) {
+                            falseOptionalValues.add(new ValueAnomaly(d, val));
+                        }
+                    }
+                }
+            } else if (d.getDecisionType() == DecisionType.STRING) {
+                StringFormula valVar = (StringFormula) context.getVar(dName + SMTConstants.VALUE_SUFFIX);
+                StringFormulaManager sfm = fm.getStringFormulaManager();
+
+                // Strings have infinite domains. Check if forbidding the current value breaks the model.
+                // If it does, it's the only valid string.
+                try (Model model = prover.getModel()) {
+                    String val = model.evaluate(valVar);
+                    if (val != null) {
+                        StringFormula valFormula = sfm.makeString(val);
+                        if (isUnsatUnderConstraint(prover, bfm.not(sfm.equal(valVar, valFormula)))) {
+                            falseOptionalValues.add(new ValueAnomaly(d, val));
+                        }
+                    }
+                }
+            }
+
+            // Pop 'isTaken'
             prover.pop();
         }
 
-        return deadDecisions;
+        Collections.sort(deadValues);
+        Collections.sort(falseOptionalValues);
+        return new AnomalyReport(false, deadDecisions, falseOptionalDecisions, deadValues, falseOptionalValues);
+    }
+
+    /**
+     * Helper method to temporarily push a constraint, check for satisfiability, and pop the constraint.
+     *
+     * @param prover     The SMT prover.
+     * @param constraint The constraint to test.
+     * @return True if the model is UNSATISFIABLE with the constraint, false otherwise.
+     */
+    private static boolean isUnsatUnderConstraint(ProverEnvironment prover, BooleanFormula constraint)
+            throws SolverException, InterruptedException {
+        prover.push();
+        prover.addConstraint(constraint);
+        boolean isUnsat = prover.isUnsat();
+        prover.pop();
+        return isUnsat;
     }
 }

@@ -44,6 +44,8 @@ public class AnomalyComparisonTest {
 
         AnomalyReport reportSMT = SMTAnomalityChecker.detectAnomalies(dopler);
         AnomalyReport reportILP = ILPAnomalityChecker.detectAnomalies(dopler);
+        AnomalyReport reportCP = dopler.toCpModel().detectAnomalies();
+        assertEquals(reportSMT, reportCP);
         assertEquals(reportSMT, reportILP);
     }
 }

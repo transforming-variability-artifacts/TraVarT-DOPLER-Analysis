@@ -23,9 +23,9 @@ public final class ILPContext implements AutoCloseable {
 
     private final MPSolver solver;
 
-    // Core config and auxiliary variables
-    private final Map<String, MPVariable> coreVars = new HashMap<>();
-    private final Map<String, MPVariable> auxVars = new HashMap<>();
+    // Core config variables separated by type
+    private final Map<String, MPVariable> coreBoolVars = new HashMap<>();
+    private final Map<String, MPVariable> coreRealVars = new HashMap<>();
 
     // Constant pooling
     private final Map<Double, MPVariable> constants = new HashMap<>();
@@ -43,7 +43,7 @@ public final class ILPContext implements AutoCloseable {
      * @return A new {@link ILPContext} instance.
      */
     public static ILPContext create() {
-        return create(ILPConstants.DEFAULT_MODEL);
+        return create(ILPConstants.getDefaultModel());
     }
 
     /**
@@ -70,7 +70,7 @@ public final class ILPContext implements AutoCloseable {
      */
     public MPVariable createCoreBoolVar(String name) {
         MPVariable var = solver.makeBoolVar(name);
-        coreVars.put(name, var);
+        coreBoolVars.put(name, var);
         return var;
     }
 
@@ -79,7 +79,9 @@ public final class ILPContext implements AutoCloseable {
      */
     public MPVariable createCoreNumVar(String name, double lb, double ub, boolean isInteger) {
         MPVariable var = isInteger ? solver.makeIntVar(lb, ub, name) : solver.makeNumVar(lb, ub, name);
-        coreVars.put(name, var);
+        if (!isInteger) { // There are no Integer types in DOPLER.
+            coreRealVars.put(name, var);
+        }
         return var;
     }
 
@@ -88,9 +90,7 @@ public final class ILPContext implements AutoCloseable {
      */
     public MPVariable createAuxVar(String baseName, double lb, double ub, boolean isInteger) {
         String name = baseName + "_aux_" + (auxCounter++);
-        MPVariable var = isInteger ? solver.makeIntVar(lb, ub, name) : solver.makeNumVar(lb, ub, name);
-        auxVars.put(name, var);
-        return var;
+        return isInteger ? solver.makeIntVar(lb, ub, name) : solver.makeNumVar(lb, ub, name);
     }
 
     /**
@@ -106,9 +106,7 @@ public final class ILPContext implements AutoCloseable {
     public MPVariable createConstant(double value) {
         return constants.computeIfAbsent(value, val -> {
             String name = "const_" + val + "_aux_" + (auxCounter++);
-            MPVariable var = solver.makeNumVar(val, val, name);
-            auxVars.put(name, var);
-            return var;
+            return solver.makeNumVar(val, val, name);
         });
     }
 
@@ -116,16 +114,22 @@ public final class ILPContext implements AutoCloseable {
      * Retrieves a core variable.
      */
     public MPVariable getCoreVar(String name) {
-        return coreVars.get(name);
+        if (coreBoolVars.containsKey(name)) return coreBoolVars.get(name);
+        return coreRealVars.get(name);
     }
 
     /**
-     * Retrieves an unmodifiable map of all declared core variables.
-     *
-     * @return A map linking variable string names to their ILP {@link MPVariable} representation.
+     * Retrieves an unmodifiable map of all declared core boolean variables.
      */
-    public Map<String, MPVariable> getCoreVars() {
-        return Collections.unmodifiableMap(coreVars);
+    public Map<String, MPVariable> getCoreBoolVars() {
+        return Collections.unmodifiableMap(coreBoolVars);
+    }
+
+    /**
+     * Retrieves an unmodifiable map of all declared core real numerical variables.
+     */
+    public Map<String, MPVariable> getCoreRealVars() {
+        return Collections.unmodifiableMap(coreRealVars);
     }
 
     /**

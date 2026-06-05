@@ -40,5 +40,7 @@ public final class DoplerSimplifier {
                 model.removeDecision(deadDecision);
             }
         }
+        // Dead decision values are not removed for now because this would require removing any reference in every
+        // statement.
     }
 }

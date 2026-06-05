@@ -18,7 +18,6 @@ import edu.kit.dopler.model.expressions.*;
 import edu.kit.dopler.solvers.ilp.ILPConstants;
 import edu.kit.dopler.solvers.ilp.ILPContext;
 import edu.kit.dopler.solvers.ilp.utils.ILPLogic;
-import edu.kit.dopler.solvers.ilp.utils.ILPSolverUtils;
 import edu.kit.dopler.solvers.shared.SolverUtils;
 
 public final class ILPExpressionEncoder {
@@ -84,7 +83,7 @@ public final class ILPExpressionEncoder {
         MPVariable leftVar = encodeExpression(left, ctx);
         MPVariable rightVar = encodeExpression(right, ctx);
 
-        if (ILPSolverUtils.isBooleanBound(leftVar) && ILPSolverUtils.isBooleanBound(rightVar)) {
+        if (isBooleanBound(leftVar) && isBooleanBound(rightVar)) {
             return ILPLogic.equals(ctx, leftVar, rightVar);
         }
 
@@ -131,5 +130,13 @@ public final class ILPExpressionEncoder {
         c2.setCoefficient(z, -M);
 
         return z;
+    }
+
+    /**
+     * Helper method to identify if a variable is boolean.
+     */
+    private static boolean isBooleanBound(MPVariable v) {
+        // No strict check because a boolean can also be bound to either 0 or 1
+        return v.lb() >= 0.0 && v.ub() <= 1.0;
     }
 }
