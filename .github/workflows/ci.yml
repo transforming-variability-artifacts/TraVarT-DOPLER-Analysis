@@ -19,6 +19,7 @@ jobs:
       - name: Download CSV files from external repo
         run: |
           git clone --depth 1 https://github.com/transforming-variability-artifacts/DOPLER-models external-csv
+          mkdir -p src/test/resources/modelCSVs/
           cp -v external-csv/CSVModels/*.csv src/test/resources/modelCSVs/
 
       - name: Upload CSV Data
