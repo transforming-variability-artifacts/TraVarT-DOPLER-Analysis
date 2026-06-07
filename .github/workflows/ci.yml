@@ -19,14 +19,13 @@ jobs:
       - name: Download CSV files from external repo
         run: |
           git clone --depth 1 https://github.com/transforming-variability-artifacts/DOPLER-models external-csv
-          mkdir -p modelEval
-          cp -v external-csv/CSVModels/*.csv modelEval/
+          cp -v external-csv/CSVModels/*.csv src/test/resources/modelCSVs/
 
       - name: Upload CSV Data
         uses: actions/upload-artifact@v4
         with:
           name: csv-models
-          path: modelEval/
+          path: src/test/resources/modelCSVs/
           retention-days: 1
 
 
@@ -49,12 +48,6 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
           cache: 'maven'
-
-      - name: Install Z3 Solver
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y z3
-          z3 --version
 
       - name: Make mvnw executable
         run: chmod +x mvnw
