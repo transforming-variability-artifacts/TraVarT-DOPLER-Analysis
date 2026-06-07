@@ -2,16 +2,31 @@
 
 ## Run
 
-Put the following dll or so files into the dependencies folder: `libcvc5jni`, `libz3`, `libz3java`.
-This works both for development and with the final jar, which also requires the dependencies folder next to it.
+To run the code, follow the instructions based on the environment:
 
-This tool invokes the SMT solver for a given dopler model file:
+* Maven: Libraries for SMT are downloaded automatically.
+* IntelliJ: Execute `mvn generate-resources` once to download the required libraries for the current OS and architecture.
 
-- As first argument: `java -jar smt_dopler-2.0.0.jar <path to model>`
+To analyze a model, run the JAR file with the following command:
 
-Help:
+`java -jar smt_dopler-2.0.0.jar -a <SMT|ILP|CP> <path to model>`.
 
-- `java -jar smt_dopler-2.0.0.jar --help`
+For ILP and SMT the solvers can be changed with the `--smt-solver <CVC5|Z3>` and `--ilp-model <CBC|SCIP>` arguments.
+
+### Troubleshooting & Configuration
+
+* Dependencies: SMT and OR-Tools dependencies are extracted automatically. In case of issues with SMT solvers, manually place `libcvc5jni`, `libz3`, and `libz3java` (with `dll/so/dylib` extension) into a `./dependencies` folder located in the same directory as the JAR.
+
+* Help: For a list of arguments and configuration options use:
+  `java -jar smt_dopler-2.0.0.jar --help`
+
+## Build
+
+To create the final JAR, use the following command:
+
+mvn clean package -Pdist
+
+> Note: The -Pdist argument is required to download and bundle all SMT libraries for all supported operating systems (Windows, Linux, and macOS) and architectures (x64 and arm64).
 
 ## Parser
 

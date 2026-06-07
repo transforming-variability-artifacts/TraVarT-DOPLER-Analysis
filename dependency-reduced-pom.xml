@@ -5,6 +5,22 @@
   <artifactId>smt_dopler</artifactId>
   <version>2.0.0</version>
   <build>
+    <extensions>
+      <extension>
+        <groupId>kr.motd.maven</groupId>
+        <artifactId>os-maven-plugin</artifactId>
+        <version>1.7.1</version>
+      </extension>
+    </extensions>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+      <resource>
+        <targetPath>${native.libs.dir}</targetPath>
+        <directory>${native.libs.path}</directory>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -24,15 +40,43 @@
         <version>3.10.0</version>
         <executions>
           <execution>
-            <id>copy-natives</id>
-            <phase>initialize</phase>
+            <id>fetch-host-natives</id>
+            <phase>generate-resources</phase>
             <goals>
-              <goal>copy-dependencies</goal>
+              <goal>copy</goal>
             </goals>
             <configuration>
-              <outputDirectory>${project.build.directory}/dependency</outputDirectory>
-              <includeTypes>so,dll,dylib</includeTypes>
-              <stripVersion>true</stripVersion>
+              <outputDirectory>${native.libs.path}/${platform.dir}</outputDirectory>
+              <overWriteReleases>false</overWriteReleases>
+              <overWriteSnapshots>true</overWriteSnapshots>
+              <overWriteIfNewer>true</overWriteIfNewer>
+              <skip>${skipHostNatives}</skip>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.sosy-lab</groupId>
+                  <artifactId>javasmt-solver-z3</artifactId>
+                  <version>${z3.version}</version>
+                  <classifier>libz3-${os.arch.suffix}</classifier>
+                  <type>${os.extension}</type>
+                  <destFileName>libz3.${os.extension}</destFileName>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.sosy-lab</groupId>
+                  <artifactId>javasmt-solver-z3</artifactId>
+                  <version>${z3.version}</version>
+                  <classifier>libz3java-${os.arch.suffix}</classifier>
+                  <type>${os.extension}</type>
+                  <destFileName>libz3java.${os.extension}</destFileName>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.sosy-lab</groupId>
+                  <artifactId>javasmt-solver-cvc5</artifactId>
+                  <version>${cvc5.version}</version>
+                  <classifier>libcvc5jni-${os.arch.suffix}</classifier>
+                  <type>${os.extension}</type>
+                  <destFileName>libcvc5jni.${os.extension}</destFileName>
+                </artifactItem>
+              </artifactItems>
             </configuration>
           </execution>
         </executions>
@@ -41,7 +85,7 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.5.5</version>
         <configuration>
-          <argLine>-Djava.library.path=./dependencies</argLine>
+          <argLine>-Djava.library.path=./dependencies --enable-native-access=ALL-UNNAMED</argLine>
         </configuration>
       </plugin>
       <plugin>
@@ -52,6 +96,7 @@
           <executable>java</executable>
           <arguments>
             <argument>-Djava.library.path=./dependencies</argument>
+            <argument>--enable-native-access=ALL-UNNAMED</argument>
             <argument>-Dfile.encoding=UTF-8</argument>
             <argument>-classpath</argument>
             <classpath />
@@ -110,6 +155,261 @@
       </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile>
+      <id>os-linux</id>
+      <properties>
+        <os.family>linux</os.family>
+        <os.extension>so</os.extension>
+      </properties>
+    </profile>
+    <profile>
+      <id>os-windows</id>
+      <properties>
+        <os.detected.arch>x86_64</os.detected.arch>
+        <os.detected.bitness>64</os.detected.bitness>
+        <os.detected.name>windows</os.detected.name>
+        <os.family>windows</os.family>
+        <os.extension>dll</os.extension>
+        <os.detected.classifier>windows-x86_64</os.detected.classifier>
+      </properties>
+    </profile>
+    <profile>
+      <id>os-mac</id>
+      <properties>
+        <os.family>macos</os.family>
+        <os.extension>dylib</os.extension>
+      </properties>
+    </profile>
+    <profile>
+      <id>arch-x64</id>
+      <properties>
+        <os.detected.arch>x86_64</os.detected.arch>
+        <os.detected.bitness>64</os.detected.bitness>
+        <os.detected.classifier>windows-x86_64</os.detected.classifier>
+        <os.detected.name>windows</os.detected.name>
+        <os.arch.suffix>x64</os.arch.suffix>
+      </properties>
+    </profile>
+    <profile>
+      <id>arch-x64-mac</id>
+      <properties>
+        <os.arch.suffix>x64</os.arch.suffix>
+      </properties>
+    </profile>
+    <profile>
+      <id>arch-arm64</id>
+      <properties>
+        <os.arch.suffix>arm64</os.arch.suffix>
+      </properties>
+    </profile>
+    <profile>
+      <id>enforce-platform-string</id>
+      <properties>
+        <os.detected.arch>x86_64</os.detected.arch>
+        <os.detected.bitness>64</os.detected.bitness>
+        <os.detected.name>windows</os.detected.name>
+        <platform.dir>${os.family}-${os.arch.suffix}</platform.dir>
+        <os.detected.classifier>windows-x86_64</os.detected.classifier>
+        <skipHostNatives>false</skipHostNatives>
+      </properties>
+    </profile>
+    <profile>
+      <id>dist</id>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>fetch-all-dist-natives</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>copy</goal>
+                </goals>
+                <configuration>
+                  <overWriteReleases>false</overWriteReleases>
+                  <overWriteSnapshots>true</overWriteSnapshots>
+                  <overWriteIfNewer>true</overWriteIfNewer>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>org.sosy-lab</groupId>
+                      <artifactId>javasmt-solver-z3</artifactId>
+                      <version>${z3.version}</version>
+                      <classifier>libz3-x64</classifier>
+                      <type>so</type>
+                      <destFileName>libz3.so</destFileName>
+                      <outputDirectory>${native.libs.path}/linux-x64</outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.sosy-lab</groupId>
+                      <artifactId>javasmt-solver-z3</artifactId>
+                      <version>${z3.version}</version>
+                      <classifier>libz3java-x64</classifier>
+                      <type>so</type>
+                      <destFileName>libz3java.so</destFileName>
+                      <outputDirectory>${native.libs.path}/linux-x64</outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.sosy-lab</groupId>
+                      <artifactId>javasmt-solver-cvc5</artifactId>
+                      <version>${cvc5.version}</version>
+                      <classifier>libcvc5jni-x64</classifier>
+                      <type>so</type>
+                      <destFileName>libcvc5jni.so</destFileName>
+                      <outputDirectory>${native.libs.path}/linux-x64</outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.sosy-lab</groupId>
+                      <artifactId>javasmt-solver-z3</artifactId>
+                      <version>${z3.version}</version>
+                      <classifier>libz3-arm64</classifier>
+                      <type>so</type>
+                      <destFileName>libz3.so</destFileName>
+                      <outputDirectory>${native.libs.path}/linux-arm64</outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.sosy-lab</groupId>
+                      <artifactId>javasmt-solver-z3</artifactId>
+                      <version>${z3.version}</version>
+                      <classifier>libz3java-arm64</classifier>
+                      <type>so</type>
+                      <destFileName>libz3java.so</destFileName>
+                      <outputDirectory>${native.libs.path}/linux-arm64</outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.sosy-lab</groupId>
+                      <artifactId>javasmt-solver-cvc5</artifactId>
+                      <version>${cvc5.version}</version>
+                      <classifier>libcvc5jni-arm64</classifier>
+                      <type>so</type>
+                      <destFileName>libcvc5jni.so</destFileName>
+                      <outputDirectory>${native.libs.path}/linux-arm64</outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.sosy-lab</groupId>
+                      <artifactId>javasmt-solver-z3</artifactId>
+                      <version>${z3.version}</version>
+                      <classifier>libz3-x64</classifier>
+                      <type>dll</type>
+                      <destFileName>libz3.dll</destFileName>
+                      <outputDirectory>${native.libs.path}/windows-x64</outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.sosy-lab</groupId>
+                      <artifactId>javasmt-solver-z3</artifactId>
+                      <version>${z3.version}</version>
+                      <classifier>libz3java-x64</classifier>
+                      <type>dll</type>
+                      <destFileName>libz3java.dll</destFileName>
+                      <outputDirectory>${native.libs.path}/windows-x64</outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.sosy-lab</groupId>
+                      <artifactId>javasmt-solver-cvc5</artifactId>
+                      <version>${cvc5.version}</version>
+                      <classifier>libcvc5jni-x64</classifier>
+                      <type>dll</type>
+                      <destFileName>libcvc5jni.dll</destFileName>
+                      <outputDirectory>${native.libs.path}/windows-x64</outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.sosy-lab</groupId>
+                      <artifactId>javasmt-solver-z3</artifactId>
+                      <version>${z3.version}</version>
+                      <classifier>libz3-arm64</classifier>
+                      <type>dll</type>
+                      <destFileName>libz3.dll</destFileName>
+                      <outputDirectory>${native.libs.path}/windows-arm64</outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.sosy-lab</groupId>
+                      <artifactId>javasmt-solver-z3</artifactId>
+                      <version>${z3.version}</version>
+                      <classifier>libz3java-arm64</classifier>
+                      <type>dll</type>
+                      <destFileName>libz3java.dll</destFileName>
+                      <outputDirectory>${native.libs.path}/windows-arm64</outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.sosy-lab</groupId>
+                      <artifactId>javasmt-solver-cvc5</artifactId>
+                      <version>${cvc5.version}</version>
+                      <classifier>libcvc5jni-arm64</classifier>
+                      <type>dll</type>
+                      <destFileName>libcvc5jni.dll</destFileName>
+                      <outputDirectory>${native.libs.path}/windows-arm64</outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.sosy-lab</groupId>
+                      <artifactId>javasmt-solver-z3</artifactId>
+                      <version>${z3.version}</version>
+                      <classifier>libz3-x64</classifier>
+                      <type>dylib</type>
+                      <destFileName>libz3.dylib</destFileName>
+                      <outputDirectory>${native.libs.path}/macos-x64</outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.sosy-lab</groupId>
+                      <artifactId>javasmt-solver-z3</artifactId>
+                      <version>${z3.version}</version>
+                      <classifier>libz3java-x64</classifier>
+                      <type>dylib</type>
+                      <destFileName>libz3java.dylib</destFileName>
+                      <outputDirectory>${native.libs.path}/macos-x64</outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.sosy-lab</groupId>
+                      <artifactId>javasmt-solver-cvc5</artifactId>
+                      <version>${cvc5.version}</version>
+                      <classifier>libcvc5jni-x64</classifier>
+                      <type>dylib</type>
+                      <destFileName>libcvc5jni.dylib</destFileName>
+                      <outputDirectory>${native.libs.path}/macos-x64</outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.sosy-lab</groupId>
+                      <artifactId>javasmt-solver-z3</artifactId>
+                      <version>${z3.version}</version>
+                      <classifier>libz3-arm64</classifier>
+                      <type>dylib</type>
+                      <destFileName>libz3.dylib</destFileName>
+                      <outputDirectory>${native.libs.path}/macos-arm64</outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.sosy-lab</groupId>
+                      <artifactId>javasmt-solver-z3</artifactId>
+                      <version>${z3.version}</version>
+                      <classifier>libz3java-arm64</classifier>
+                      <type>dylib</type>
+                      <destFileName>libz3java.dylib</destFileName>
+                      <outputDirectory>${native.libs.path}/macos-arm64</outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.sosy-lab</groupId>
+                      <artifactId>javasmt-solver-cvc5</artifactId>
+                      <version>${cvc5.version}</version>
+                      <classifier>libcvc5jni-arm64</classifier>
+                      <type>dylib</type>
+                      <destFileName>libcvc5jni.dylib</destFileName>
+                      <outputDirectory>${native.libs.path}/macos-arm64</outputDirectory>
+                    </artifactItem>
+                  </artifactItems>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+      <properties>
+        <os.detected.arch>x86_64</os.detected.arch>
+        <os.detected.bitness>64</os.detected.bitness>
+        <os.detected.classifier>windows-x86_64</os.detected.classifier>
+        <os.detected.name>windows</os.detected.name>
+        <skipHostNatives>true</skipHostNatives>
+      </properties>
+    </profile>
+  </profiles>
   <dependencies>
     <dependency>
       <groupId>io.github.universal-variability-language</groupId>
@@ -204,16 +504,18 @@
     </plugins>
   </reporting>
   <properties>
-    <maven.compiler.target>21</maven.compiler.target>
     <javadoc.disabled>true</javadoc.disabled>
     <javasmt.version>6.0.0</javasmt.version>
     <java.version>21</java.version>
-    <cvc5.version>2026-04-08-ca862b4</cvc5.version>
     <maven.compiler.source>21</maven.compiler.source>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <source.disabled>true</source.disabled>
     <checkstyle-maven-plugin.version>3.6.0</checkstyle-maven-plugin.version>
+    <native.libs.dir>dependencies</native.libs.dir>
     <z3.version>4.16.0</z3.version>
     <deploy.disabled>true</deploy.disabled>
+    <maven.compiler.target>21</maven.compiler.target>
+    <cvc5.version>2026-04-08-ca862b4</cvc5.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <source.disabled>true</source.disabled>
+    <native.libs.path>${project.basedir}/${native.libs.dir}</native.libs.path>
   </properties>
 </project>

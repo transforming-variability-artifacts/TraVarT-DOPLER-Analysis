@@ -37,7 +37,6 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sosy_lab.java_smt.SolverContextFactory.Solvers;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -75,7 +74,7 @@ public class Main implements Callable<Integer> {
             description =
                     "SMT Solver to use (Requires SMT analyzer and libraries to be available in ./dependencies): ${COMPLETION-CANDIDATES}. Default: ${DEFAULT-VALUE}",
             defaultValue = "CVC5")
-    private Solvers smtSolver;
+    private SMTConstants.SMTSolvers smtSolver;
 
     @Option(
             names = {"--ilp-model"},
