@@ -1,8 +1,10 @@
 # SMT Encoding Design
 
 ## SMT-LIB Standard
+
 The SMT-LIB standard defines a file format for describing decision problems.
-The benefit of a standardized file format is that it is easy to experiment with a range of solvers, and to replace the solver used in case better solvers are developed.
+The benefit of a standardized file format is that it is easy to experiment with a range of solvers, and to replace the
+solver used in case better solvers are developed.
 
 ## Overview
 
@@ -32,11 +34,11 @@ For enumeration decisions, each literal in the enumeration gets its own boolean 
 
 For boolean, number, and string decisions, a single value constant is declared with the appropriate sort:
 
-| Decision type | Sort   | Example constant name      |
-|---------------|--------|----------------------------|
-| Boolean       | Bool   | `DECISION_NAME_VALUE`      |
-| Number        | Real   | `DECISION_NAME_VALUE`      |
-| String        | String | `DECISION_NAME_VALUE`      |
+| Decision type | Sort   | Example constant name |
+|---------------|--------|-----------------------|
+| Boolean       | Bool   | `DECISION_NAME_VALUE` |
+| Number        | Real   | `DECISION_NAME_VALUE` |
+| String        | String | `DECISION_NAME_VALUE` |
 
 Number decisions use the Real sort to support decimal (double) values.
 
@@ -59,7 +61,7 @@ For each decision, three kinds of constraints are generated: rules, validity, an
 
 ### 2.1 Rules
 
-A rule belongs to one decision and has a condition and a list of actions. 
+A rule belongs to one decision and has a condition and a list of actions.
 The rule fires only when the source decision is taken and the rule condition holds.
 This combined boolean is called the activation:
 
@@ -71,7 +73,8 @@ The activation is passed to each action in the rule to determine if they should 
 
 ### 2.2 Validity
 
-If a decision defines validity conditions (e.g., a number range), those conditions must hold whenever the decision is taken.
+If a decision defines validity conditions (e.g., a number range), those conditions must hold whenever the decision is
+taken.
 All validity conditions are combined with AND:
 
 ```
@@ -87,21 +90,25 @@ NOT DECISION_NAME_TAKEN => defaultEquality
 ```
 
 **Boolean decision default:**
+
 ```
 NOT DECISION_NAME_TAKEN => (DECISION_NAME_VALUE = standardBooleanValue)
 ```
 
 **Number decision default:**
+
 ```
 NOT DECISION_NAME_TAKEN => (DECISION_NAME_VALUE = standardRealValue)
 ```
 
 **String decision default:**
+
 ```
 NOT DECISION_NAME_TAKEN => (DECISION_NAME_VALUE = "standardStringValue")
 ```
 
 **Enumeration decision default:** Every literal is forced to false:
+
 ```
 NOT DECISION_NAME_TAKEN => (LiteralA = false AND LiteralB = false AND ...)
 ```
@@ -112,7 +119,8 @@ The default constraint does not conflict with enforce actions from other decisio
 
 ## Step 3: Visibility Consistency
 
-After all rules have been processed, the `_TAKEN` flag of each decision is defined. A decision is taken if and only if it is visible or at least one enforce action that targets it is currently active:
+After all rules have been processed, the `_TAKEN` flag of each decision is defined. A decision is taken if and only if
+it is visible or at least one enforce action that targets it is currently active:
 
 ```
 DECISION_NAME_TAKEN = (visibilityCondition OR enforceTrigger_1 OR enforceTrigger_2 OR ...)
@@ -123,7 +131,8 @@ DECISION_NAME_TAKEN = (visibilityCondition OR enforceTrigger_1 OR enforceTrigger
 ## Step 4: Enumeration Cardinality
 
 Enumeration decisions allow a minimum and maximum number of literals to be selected at the same time.
-This is modeled by converting each literal boolean to an integer with an if-then-else expression and summing the results:
+This is modeled by converting each literal boolean to an integer with an if-then-else expression and summing the
+results:
 
 ```
 sum := (ite LiteralA 1 0) + (ite LiteralB 1 0) + ... + (ite LiteralN 1 0)
@@ -142,11 +151,13 @@ The second constraint forces all literals to false when the decision is not take
 
 ## Actions
 
-Every action receives the activation literal of its parent rule. An action only has an effect when its activation is true.
+Every action receives the activation literal of its parent rule. An action only has an effect when its activation is
+true.
 
 ### Allows
 
-No constraint is added. The solver already explores the full range of literal combinations within the cardinality bounds.
+No constraint is added. The solver already explores the full range of literal combinations within the cardinality
+bounds.
 
 ### DisAllows
 
@@ -172,7 +183,8 @@ The enforce action also registers its activation as an isTaken trigger for the t
 TARGET_DECISION_TAKEN triggers += activation
 ```
 
-This ensures that the target decision is considered taken whenever it is enforced, even if its own visibility condition is false.
+This ensures that the target decision is considered taken whenever it is enforced, even if its own visibility condition
+is false.
 
 ### Enforce (Enum)
 
@@ -232,7 +244,8 @@ Equals has two cases depending on whether one of its operands is an enumeration 
 DECISION_NAME_VALUE
 ```
 
-When one side is an `EnumeratorLiteralExpression` and the other is a `DecisionValueCallExpression`, the encoding checks the boolean variable for that literal directly.
+When one side is an `EnumeratorLiteralExpression` and the other is a `DecisionValueCallExpression`, the encoding checks
+the boolean variable for that literal directly.
 
 For other types (Boolean, Number, String), both sides are evaluated normally and compared:
 
@@ -276,7 +289,8 @@ DECISION_NAME_VALUE
 
 Returns the result of encoding the visibility condition of the referenced decision.
 
-If the visibility condition is a `LiteralExpression`, it is evaluated immediately at encoding time and replaced with a boolean constant.
+If the visibility condition is a `LiteralExpression`, it is evaluated immediately at encoding time and replaced with a
+boolean constant.
 
 Otherwise, the visibility condition expression is encoded recursively.
 
