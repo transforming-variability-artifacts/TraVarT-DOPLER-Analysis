@@ -1,0 +1,13 @@
+ID;Question;Type;Range;Cardinality;Constraint/Rule;Visible/relevant if
+ConcurrentUsers;For this microservice, how many concurrent users or client sessions are typical and at peak?;Double;1-100;;true;
+AmountOfOperations;Per session, what are the average and maximum numbers of operations, requests, or monitored items processed by this microservice?;Double;;;;true
+NormalUpdateRates;What are the normal request/update rates for this microservice (e.g., calls per second)?;Double;;;;true
+PeakUpdateRates;What are the peak request/update rates for this microservice (e.g., calls per second)?;;;;true;
+PayloadSize;What is the typical payload size for a single request or response handled by this microservice?;Double;;;;true
+DataTypeMix;What is data-type mix for a single request or response handled by this microservice?;String;;;;true
+TrafficBurstiness;Describe traffic burstiness for this microservice: do clients ramp up gradually, or can large spikes occur suddenly?;String;;;;true
+Security;Which security or protocol options are enabled for this microservice, and how often are handshakes performed?;Enumeration;plaintext | sign | sign-and-encrypt;01:01;;true
+SessionLifetime;What is the typical session lifetime for clients of this microservice?;Double;0-1;;;true
+ReconnectFrequency;What is the reconnect frequency for clients of this microservice?;Double;0-1;;;true
+SynchronousData;During a request, does this microservice fetch data synchronously from dependencies?;Boolean;false | true;;;true
+FetchingType;During a request, does this microservice use caching or queuing?;Enumeration;caching | queuing;01:01;;SynchronousData

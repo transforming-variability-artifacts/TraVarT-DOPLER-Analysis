@@ -1,0 +1,4 @@
+ID;Question;Type;Range;Cardinality;Constraint/Rule;Visible/relevant if
+Barrel1_2;Barrel1_2?;Boolean;true | false;;"if (!(!Pipe.Pipe2 && !Pipe.Pipe8)) {Barrel1_2 = true;}if (Pipe.Pipe3) {Barrel1_2 = false;}";true
+Pipe;Which Pipe?;Enumeration;Pipe3 | Pipe8 | Pipe2;1:1;"if (!(!Lock.Lock1 || Pipe.Pipe2)) {Pipe = Pipe3;}if (Lock.Lock2) {Pipe = Pipe3;}if (Lock.Lock3) {Pipe = Pipe8;}";true
+Lock;Which Lock?;Enumeration;Lock3 | Lock2 | Lock1;1:1;;true

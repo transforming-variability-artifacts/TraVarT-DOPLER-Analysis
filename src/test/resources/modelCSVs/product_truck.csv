@@ -1,0 +1,2 @@
+ID;Question;Type;Range;Cardinality;Constraint/Rule;Visible/relevant if
+Body;Which Body?;Enumeration;Tank | OpenTop | Dumper | StakeBed;1:1;;true

@@ -1,0 +1,4 @@
+ID;Question;Type;Range;Cardinality;Constraint/Rule;Visible/relevant if
+Cheese;Cheese?;Boolean;true | false;;;true
+Sauce;Sauce?;Boolean;true | false;;;true
+Sauce_;Which Sauce_?;Enumeration;Ketchup | Mustard;1:1;;Sauce

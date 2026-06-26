@@ -1,46 +1,70 @@
 # Analysis of Decision Models
 
 ## Run
-This tool invokes the Z3 SMT solver. You can now pass the path to your Z3 binary when starting the program:
 
-- As first argument: `java -jar smt_dopler-2.0.0.jar /full/path/to/z3`
-- Or with flags: `java -jar smt_dopler-2.0.0.jar --z3=/full/path/to/z3` or `-z /full/path/to/z3`
-- Or via environment variable: `Z3_PATH=/full/path/to/z3 java -jar smt_dopler-2.0.0.jar`
+To run the code, follow the instructions based on the environment:
 
-Help:
+* Maven: Libraries for SMT are downloaded automatically.
+* IntelliJ: Execute `mvn generate-resources` once to download the required libraries for the current OS and
+  architecture.
 
-- `java -jar smt_dopler-2.0.0.jar --help`
+To analyze a model, run the JAR file with the following command:
 
-If no path is provided, the program will try to execute `z3` from your PATH.
+`java -jar smt_dopler-2.0.0.jar -a <SMT|ILP|CP> <path to model>`.
+
+For ILP and SMT the solvers can be changed with the `--smt-solver <CVC5|Z3>` and `--ilp-model <CBC|SCIP>` arguments.
+
+### Troubleshooting & Configuration
+
+* Dependencies: SMT and OR-Tools dependencies are extracted automatically. In case of issues with SMT solvers, manually
+  place `libcvc5jni`, `libz3`, and `libz3java` (with `dll/so/dylib` extension) into a `./dependencies` folder located in
+  the same directory as the JAR.
+
+* Help: For a list of arguments and configuration options use:
+  `java -jar smt_dopler-2.0.0.jar --help`
+
+## Build
+
+To create the final JAR, use the following command:
+
+mvn clean package -Pdist
+
+> Note: The -Pdist argument is required to download and bundle all SMT libraries for all supported operating systems (
+> Windows, Linux, and macOS) and architectures (x64 and arm64).
 
 ## Parser
 
-Information about the parser see [here](Parser.md)
+Information about the parser see [here](docs/Parser.md)
 
 ## DOPLER META-MODEL
 
 In the following the metamodel of the DOPLER decision model is presented.
 
 #### Validity Condition
+
 Defines the set of allowed values (with respect to the decision type and additional user-defined constraints)
-Post condition which has to be fulfilled after a user takes a decision and before assigning a value to the decision variable
+Post condition which has to be fulfilled after a user takes a decision and before assigning a value to the decision
+variable
 
 #### Visibility Condition
-Defines when a decision, becomes relevant and can be answered during product derivation.
-If there is a visibility condition associated with a decision, the user has to first take the decisions appearing in the visibility condition
-![Dopler Metamodel](/images/dOPLER.svg)
 
+Defines when a decision, becomes relevant and can be answered during product derivation.
+If there is a visibility condition associated with a decision, the user has to first take the decisions appearing in the
+visibility condition
+![Dopler Metamodel](/images/dOPLER.svg)
 
 ## SMT Encoding
 
-Detailed Explanation of the SMT Encoding you can find [here](SMTEncoding.md)
+Detailed Explanation of the SMT Encoding you can find [here](docs/SMTEncoding.md)
+
+## ILP Encoding
+
+Detailed Explanation of the ILP Encoding you can find [here](docs/ILPEncoding.md)
 
 ## CP Encoding
 
-Detailed Explanation of the CP Encoding you can find [here](CPEncoding.md)
+Detailed Explanation of the CP Encoding you can find [here](docs/CPEncoding.md)
 
 ## CI Pipeline
 
-Information about the CI pipeline see [here](CIPipeline.md)
-
-
+Information about the CI pipeline see [here](docs/CIPipeline.md)

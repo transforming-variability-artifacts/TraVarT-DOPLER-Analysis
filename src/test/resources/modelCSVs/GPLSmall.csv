@@ -1,0 +1,6 @@
+ID;Question;Type;Range;Cardinality;Constraint/Rule;Visible/relevant if
+Alg;Which Alg?;Enumeration;Number | Connected | StrongConnect | Cycle | MSTPrim | MSTKruskal | ShortestPath;1:7;"if (Alg.Cycle) {Src* = DFS;}if (Alg.Number) {Src = true;}if (!(!Alg.MSTKruskal && !Alg.MSTPrim)) {Gtp = Undirected;Wgt = Weighted;}if (Alg.ShortestPath) {Gtp = Directed;Wgt = Weighted;}if (Alg.Connected) {Gtp = Undirected;Src = true;}if (Alg.StrongConnect) {Gtp = Directed;Src* = DFS;}if (Alg.MSTKruskal) {disAllow(Alg.MSTPrim);}";true
+Gtp;Which Gtp?;Enumeration;Directed | Undirected;1:1;;true
+Src;Src?;Boolean;true | false;;;true
+Src*;Which Src*?;Enumeration;BFS | DFS;1:1;;Src
+Wgt;Which Wgt?;Enumeration;Weighted | Unweighted;1:1;;true

@@ -1,0 +1,92 @@
+ID;Question;Type;Range;Cardinality;Constraint/Rule;Visible/relevant if
+AccountType;Which AccountType?;Enumeration;Saving | Current;1:1;;true
+ActivateAccount;ActivateAccount?;Boolean;true | false;;;true
+AddAccountHolder;AddAccountHolder?;Boolean;true | false;;;true
+AddBeneficiary;AddBeneficiary?;Boolean;true | false;;;true
+AddBeneficiary_;Which AddBeneficiary_?;Enumeration;InterBank | IntraBank;1:2;;AddBeneficiary
+AddPayee;AddPayee?;Boolean;true | false;;;CreditCards
+ApplyBalanceTransfer;ApplyBalanceTransfer?;Boolean;true | false;;;CreditCards
+ApplyChargesForCashWithdrawal;ApplyChargesForCashWithdrawal?;Boolean;true | false;;;CreditCards
+ApplyLateFees;ApplyLateFees?;Boolean;true | false;;;CreditCards
+ApplyProcessingFees;ApplyProcessingFees?;Boolean;true | false;;;CreditCards
+AssetVerification;AssetVerification?;Boolean;true | false;;"if (LoanType.LoanAgainstProperty) {AssetVerification = true;}if (LoanType.HomeLoan) {AssetVerification = true;}if (LoanType.LoanAgainstFD) {AssetVerification = true;}if (LoanType.GoldLoan) {AssetVerification = true;}";Loan
+AutoATMPinForDebitCard;AutoATMPinForDebitCard?;Boolean;true | false;;;true
+BankingMode;Which BankingMode?;Enumeration;ATM | Bank | Online;1:1;;true
+CancelDemandDraft;CancelDemandDraft?;Boolean;true | false;;;true
+CancelPayOrder;CancelPayOrder?;Boolean;true | false;;;true
+CancelStandingInstructionOnCreditCard;CancelStandingInstructionOnCreditCard?;Boolean;true | false;;;CreditCards
+CardType;Which CardType?;Enumeration;MasterCard | VisaCard | MastroCard;1:1;;ReconcilingCardsTransactions
+CardType_2;Which CardType_2?;Enumeration;PlatinumCard | TitaniumCard | DinersClubCard | JetPrivilegeCard | InfiniaCard | RegaliaCard | SuperiaCard | TitaniumEdgeCard | SolitaireCard;1:9;;CreditCards
+CashWithdrawalFromCreditCard;CashWithdrawalFromCreditCard?;Boolean;true | false;;;CreditCards
+ChangeATMPin;ChangeATMPin?;Boolean;true | false;;;true
+ChangeMaxLimitForOnlineTransfer;ChangeMaxLimitForOnlineTransfer?;Boolean;true | false;;;true
+ChangePassword;ChangePassword?;Boolean;true | false;;;true
+CheckingBalance;CheckingBalance?;Boolean;true | false;;;true
+CheckingMoneyExchangeRate;CheckingMoneyExchangeRate?;Boolean;true | false;;;true
+ChequeBookType;Which ChequeBookType?;Enumeration;Regular | Multicity;1:2;;IssueChequeBook
+ChequeClearance;ChequeClearance?;Boolean;true | false;;;true
+CloseAccount;CloseAccount?;Boolean;true | false;;;true
+CloseFixedDeposit;CloseFixedDeposit?;Boolean;true | false;;;true
+ConvertTransactionToEMI;ConvertTransactionToEMI?;Boolean;true | false;;;CreditCards
+CreateDemandDraft;CreateDemandDraft?;Boolean;true | false;;;true
+CreateDemandDraftOnline;CreateDemandDraftOnline?;Boolean;true | false;;;true
+CreateECSTransaction;CreateECSTransaction?;Boolean;true | false;;;true
+CreatePayOrder;CreatePayOrder?;Boolean;true | false;;;true
+CreateStandingInstruction;CreateStandingInstruction?;Boolean;true | false;;;true
+CreateStandingInstructionOnCreditCard;CreateStandingInstructionOnCreditCard?;Boolean;true | false;;;CreditCards
+CreditBTAmountToOtherCard;CreditBTAmountToOtherCard?;Boolean;true | false;;;CreditCards
+CreditCardPayment;CreditCardPayment?;Boolean;true | false;;;true
+CreditCards;CreditCards?;Boolean;true | false;;;true
+CreditRewardPoints;CreditRewardPoints?;Boolean;true | false;;;CreditCards
+CreditThroughNEFT;CreditThroughNEFT?;Boolean;true | false;;;true
+CreditThroughRTGS;CreditThroughRTGS?;Boolean;true | false;;;true
+CurrencyExchange;CurrencyExchange?;Boolean;true | false;;;true
+DeleteAccountHolder;DeleteAccountHolder?;Boolean;true | false;;;true
+DeleteECSTransaction;DeleteECSTransaction?;Boolean;true | false;;;true
+DeleteStandingInstruction;DeleteStandingInstruction?;Boolean;true | false;;;true
+DepositMoney;DepositMoney?;Boolean;true | false;;;true
+Employee;Which Employee?;Enumeration;Cleark | Manager | AssitManager | Accountent;1:1;;true
+FastWithdrawal;FastWithdrawal?;Boolean;true | false;;;true
+FreezeAccount;FreezeAccount?;Boolean;true | false;;;true
+FreezeAccount_;Which FreezeAccount_?;Enumeration;Manual | Automatic;1:2;;FreezeAccount
+GenerateOTP;GenerateOTP?;Boolean;true | false;;;CreditCards
+InterBankTransfer;InterBankTransfer?;Boolean;true | false;;;true
+InternationalTransfer;InternationalTransfer?;Boolean;true | false;;;true
+IntraBankTransfer;IntraBankTransfer?;Boolean;true | false;;;true
+IssueChequeBook;IssueChequeBook?;Boolean;true | false;;;true
+LanguageSelection;LanguageSelection?;Boolean;true | false;;;true
+Loan;Loan?;Boolean;true | false;;;true
+LoanRepaymentEMI;LoanRepaymentEMI?;Boolean;true | false;;;Loan
+LoanRepaymentForecloser;LoanRepaymentForecloser?;Boolean;true | false;;;Loan
+LoanType;Which LoanType?;Enumeration;Personal | GoldLoan | HomeLoan | VehicleLoan | LoanAgainstFD | LoanAgainstProperty;1:1;;Loan
+MapChequeBookToAccount;MapChequeBookToAccount?;Boolean;true | false;;;true
+MapDebitCardToAccount;MapDebitCardToAccount?;Boolean;true | false;;;true
+MobileTopUp;MobileTopUp?;Boolean;true | false;;;true
+MoneyExchange;MoneyExchange?;Boolean;true | false;;;true
+Online_1_;Which Online_1_?;Enumeration;NetBanking | DebitCard;1:1;;PaymentChannel.Online_1
+PayBills;PayBills?;Boolean;true | false;;;true
+PayCreditCardBill;PayCreditCardBill?;Boolean;true | false;;;CreditCards
+PayUtilityBills;PayUtilityBills?;Boolean;true | false;;;CreditCards
+PaymentChannel;Which PaymentChannel?;Enumeration;Cheque_1 | Cash_1 | Online_1 | ATM_1;1:4;;PayCreditCardBill
+PaymentMode;Which PaymentMode?;Enumeration;Visa | Mastro | Master | AmericanExpress;1:4;;CreditCards
+PreclosureFixedDeposit;PreclosureFixedDeposit?;Boolean;true | false;;;true
+PrintingBalanceAfterWithdraw;PrintingBalanceAfterWithdraw?;Boolean;true | false;;;true
+PrintingBankStatement;PrintingBankStatement?;Boolean;true | false;;;true
+ReactivateAccount;ReactivateAccount?;Boolean;true | false;;;true
+ReconcilingATMTransactions;ReconcilingATMTransactions?;Boolean;true | false;;;true
+ReconcilingCardsTransactions;ReconcilingCardsTransactions?;Boolean;true | false;;;true
+RedemRewardPoints;RedemRewardPoints?;Boolean;true | false;;;CreditCards
+RegisterForEstatement;RegisterForEstatement?;Boolean;true | false;;;CreditCards
+RegisterMobileNoForBanking;RegisterMobileNoForBanking?;Boolean;true | false;;;true
+RemoveBeneficiary;RemoveBeneficiary?;Boolean;true | false;;;true
+RepaymentMode;Which RepaymentMode?;Enumeration;Cheque | ECS | Cash;1:1;;Loan
+RequestDuplicateEstatement;RequestDuplicateEstatement?;Boolean;true | false;;;CreditCards
+ReverseTransaction;ReverseTransaction?;Boolean;true | false;;;CreditCards
+SendEmailAlerts;SendEmailAlerts?;Boolean;true | false;;;CreditCards
+SendSMSAlerts;SendSMSAlerts?;Boolean;true | false;;;CreditCards
+Size;Which Size?;Enumeration;a15 | a30 | a50 | a100;1:1;;IssueChequeBook
+UpdateContactDetails;UpdateContactDetails?;Boolean;true | false;;;true
+UserInterface;UserInterface?;Boolean;true | false;;;true
+ViewUnbilledTransaction;ViewUnbilledTransaction?;Boolean;true | false;;;CreditCards
+WithdrawMoney;WithdrawMoney?;Boolean;true | false;;;true
+eStatement;eStatement?;Boolean;true | false;;;CreditCards

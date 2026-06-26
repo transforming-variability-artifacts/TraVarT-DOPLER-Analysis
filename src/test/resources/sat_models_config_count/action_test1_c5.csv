@@ -1,0 +1,3 @@
+ID;Question;Type;Range;Cardinality;Constraint/Rule;Visible/relevant if
+ColorChoice;Which color?;Enumeration;Red | Green | Blue;1:1;;true
+IsPremium;Are you premium?;Boolean;true | false;;"if(IsPremium == true){allow(ColorChoice.Red); disAllow(ColorChoice.Blue);}";true

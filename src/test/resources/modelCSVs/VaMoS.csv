@@ -1,0 +1,6 @@
+ID;Question;Type;Range;Cardinality;Constraint/Rule;Visible/relevant if
+GSM_Protocol_1900;GSM_Protocol_1900?;Boolean;true | false;;;true
+Audio_Formats;Which Audio_Formats?;Enumeration;WAV | MP3;1:2;"if (MP3_Recording) {Audio_Formats = MP3;}";true
+Camera;Camera?;Boolean;true | false;;;true
+Camera_Resolution;Which Camera_Resolution?;Enumeration;T21MP | T5MP | T31MP;1:1;;Camera
+MP3_Recording;MP3_Recording?;Boolean;true | false;;;true

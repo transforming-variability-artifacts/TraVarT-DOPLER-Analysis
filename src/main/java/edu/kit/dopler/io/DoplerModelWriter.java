@@ -5,19 +5,22 @@
  * Public License, v. 2.0. If a copy of the MPL was not distributed
  * with this file, You can obtain one at
  * https://mozilla.org/MPL/2.0/.
- * <p>
- * Contributors:
- *    @author David Kowal
- *    @author Kevin Feichtinger
- * <p>
+ *
  * Copyright 2024 Karlsruhe Institute of Technology (KIT)
  * KASTEL - Dependability of Software-intensive Systems
  *******************************************************************************/
-
 package edu.kit.dopler.io;
 
-import edu.kit.dopler.model.*;
-
+import edu.kit.dopler.model.Dopler;
+import edu.kit.dopler.model.basic.EnumerationLiteral;
+import edu.kit.dopler.model.basic.Rule;
+import edu.kit.dopler.model.decisions.EnumerationDecision;
+import edu.kit.dopler.model.decisions.IDecision;
+import edu.kit.dopler.model.decisions.NumberDecision;
+import edu.kit.dopler.model.expressions.DoubleLiteralExpression;
+import edu.kit.dopler.model.expressions.GreaterThan;
+import edu.kit.dopler.model.expressions.IExpression;
+import edu.kit.dopler.model.expressions.LessThan;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -40,13 +43,9 @@ public class DoplerModelWriter {
                 String cardinalityString = createCardinalityString(obj);
 
                 // Write lines
-                String line = obj.getDisplayId() + ";" +
-                        obj.getQuestion() + ";" +
-                        obj.getDecisionType() + ";" +
-                        rangeString + ";" +
-                        cardinalityString + ";" +
-                        rulesString + ";" +
-                        obj.getVisibilityCondition() + "\n";
+                String line = obj.getDisplayId() + ";" + obj.getQuestion() + ";" + obj.getDecisionType() + ";"
+                        + rangeString + ";" + cardinalityString + ";" + rulesString + ";" + obj.getVisibilityCondition()
+                        + "\n";
                 out.write(line);
             }
         }
@@ -144,7 +143,9 @@ public class DoplerModelWriter {
                 List<EnumerationLiteral> enumeration =
                         new ArrayList<>(enumDecision.getEnumeration().getEnumerationLiterals());
                 enumeration.sort(Comparator.comparing(EnumerationLiteral::getValue));
-                return String.join(" | ", enumeration.stream().map(EnumerationLiteral::getValue).toList());
+                return String.join(
+                        " | ",
+                        enumeration.stream().map(EnumerationLiteral::getValue).toList());
             }
             default -> {
                 return "";

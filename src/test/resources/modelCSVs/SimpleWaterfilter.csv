@@ -1,0 +1,18 @@
+ID;Question;Type;Range;Cardinality;Constraint/Rule;Visible/relevant if
+Charcoal;Charcoal?;Boolean;true | false;;;true
+Charcoal*;Which Charcoal*?;Enumeration;CharcoalBone | CharcoalActive;1:1;;Charcoal
+FilterTank;Which FilterTank?;Enumeration;FilterTankS | FilterTankXL;1:1;;true
+FilterTankModule;Which FilterTankModule?;Enumeration;FilterTankXLModule | FilterTankSModule;1:1;;true
+FilterTankSModule*;Which FilterTankSModule*?;Enumeration;CAFilterTankSModule | CBFilterTankSModule;1:1;;FilterTankModule.FilterTankSModule
+FilterTankXLModule*;Which FilterTankXLModule*?;Enumeration;CBFilterTankXLModule | CAFilterTankXLModule;1:1;;FilterTankModule.FilterTankXLModule
+FreshwaterTank;FreshwaterTank?;Boolean;true | false;;;true
+FreshwaterTankModule;Which FreshwaterTankModule?;Enumeration;FreshwaterTankSModule | FreshwaterTankXLModule;1:1;;true
+FreshwaterTank*;Which FreshwaterTank*?;Enumeration;FreshwaterTankS | FreshwaterTankXL;1:1;;FreshwaterTank
+Mount;Which Mount?;Enumeration;IronFrame | Rack2 | Rack1;1:1;;true
+Nanofilter;Nanofilter?;Boolean;true | false;;;true
+Tube3;Tube3?;Boolean;true | false;;;true
+Valve;Valve?;Boolean;true | false;;;true
+Valve1;Valve1?;Boolean;true | false;;;Valve
+Valve2;Valve2?;Boolean;true | false;;;Valve
+WastewaterTankXL;WastewaterTankXL?;Boolean;true | false;;;true
+WastewaterTankXLModule;WastewaterTankXLModule?;Boolean;true | false;;;true

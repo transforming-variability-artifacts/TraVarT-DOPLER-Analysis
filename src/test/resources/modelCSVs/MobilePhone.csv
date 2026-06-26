@@ -1,0 +1,5 @@
+ID;Question;Type;Range;Cardinality;Constraint/Rule;Visible/relevant if
+GPS;GPS?;Boolean;true | false;;;true
+Media;Media?;Boolean;true | false;;;true
+Media*;Which Media*?;Enumeration;Camera | MP3;1:2;"if (!Screen.HighResolution) {disAllow(Media*.Camera);}";Media
+Screen;Which Screen?;Enumeration;Basic | Colour | HighResolution;1:1;"if (GPS) {disAllow(Screen.Basic);}";true

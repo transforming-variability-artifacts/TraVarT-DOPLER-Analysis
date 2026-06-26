@@ -1,0 +1,6 @@
+ID;Question;Type;Range;Cardinality;Constraint/Rule;Visible/relevant if
+Base;Which Base?;Enumeration;Base_onestrip | Base_twostrip;1:1;"if (Body.Body_minor) {Base = Base_onestrip;}if (Body.Body_major) {Base = Base_twostrip;}";true
+Body;Which Body?;Enumeration;Body_minor | Body_major;1:1;;true
+Body_major*;Which Body_major*?;Enumeration;Queen_body | King_body;1:1;;Body.Body_major
+Body_minor*;Which Body_minor*?;Enumeration;Pawn_body | Bishop_body | Rook_body | Knight_body;1:1;;Body.Body_minor
+Rod;Which Rod?;Enumeration;Rod_long | Rod_short;1:1;"if (Body.Body_minor) {Rod = Rod_short;}if (Body.Body_major) {Rod = Rod_long;}";true

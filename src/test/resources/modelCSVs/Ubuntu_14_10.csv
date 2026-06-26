@@ -1,0 +1,116 @@
+ID;Question;Type;Range;Cardinality;Constraint/Rule;Visible/relevant if
+AcceptanceDelay;AcceptanceDelay?;Boolean;true | false;;"if (AcceptanceDelay2) {AcceptanceDelay = true;}if (SlowKeys) {AcceptanceDelay = true;}if (BounceKeys) {AcceptanceDelay = true;}";true
+AcceptanceDelay1;Which AcceptanceDelay1?;Enumeration;Long3 | Short1;1:1;"if (!((((AcceptanceDelay3.Short5 || Delay2.Short4) || Delay1*.Short3) || AcceptanceDelay2*.Short2) || !Short)) {AcceptanceDelay1 = Short1;}";BounceKeys
+AcceptanceDelay2;AcceptanceDelay2?;Boolean;true | false;;;SimulatedSecondaryCLick
+AcceptanceDelay2*;Which AcceptanceDelay2*?;Enumeration;Long4 | Short2;1:1;;AcceptanceDelay2
+AcceptanceDelay3;Which AcceptanceDelay3?;Enumeration;Long2 | Short5;1:1;;SlowKeys
+AddShowDesktopIconToTheLauncher;AddShowDesktopIconToTheLauncher?;Boolean;true | false;;;Appearance
+AllowDifferentLayoutsForIndividualWindows;AllowDifferentLayoutsForIndividualWindows?;Boolean;true | false;;"if (AllowDifferentLayoutsForIndividualWindows1) {AllowDifferentLayoutsForIndividualWindows = true;}if (LayoutSettings*.AllowDifferentLayoutsForIndividualWindows2) {AllowDifferentLayoutsForIndividualWindows = true;}";true
+AllowDifferentLayoutsForIndividualWindows1;AllowDifferentLayoutsForIndividualWindows1?;Boolean;true | false;;"if (!(LayoutSettings*.AllowDifferentLayoutsForIndividualWindows2 || !AllowDifferentLayoutsForIndividualWindows)) {AllowDifferentLayoutsForIndividualWindows1 = true;}";TextEntry
+AllowDifferentLayoutsForIndividualWindows1*;Which AllowDifferentLayoutsForIndividualWindows1*?;Enumeration;NewWindowsUseTheCurrentSource | NewWindowsUseTheDefaultSource;1:1;;AllowDifferentLayoutsForIndividualWindows1
+AllowDifferentLayoutsForIndividualWindows2*;Which AllowDifferentLayoutsForIndividualWindows2*?;Enumeration;NewWindowsUseTheDefaultLayout | NewWindowsUseThePreviousWindowsLayout;1:1;;LayoutSettings*.AllowDifferentLayoutsForIndividualWindows2
+Alt_Super_plus;Alt_Super_plus?;Boolean;true | false;;"if (UniversalAccess2*.TurnZoomOnOrOff) {Alt_Super_plus = true;}if (UniversalAccess2*.TurnScreenReaderOnOrOff) {Alt_Super_plus = true;}";true
+Appearance;Appearance?;Boolean;true | false;;;true
+AutoHideTheLauncher;AutoHideTheLauncher?;Boolean;true | false;;;Appearance
+Background;Which Background?;Enumeration;TwillightFrost2560x1600 | EarlyBlossom2560x1600 | Ubuntu2560x1600 | MorningDew2560x1600 | PrecisePagolin2560x1600 | DelicatePetals2560x1600;1:1;;Appearance
+BeepOnCapsAndNumLock;BeepOnCapsAndNumLock?;Boolean;true | false;;;Seeing
+BeepWhenAKeyIsRejected;BeepWhenAKeyIsRejected?;Boolean;true | false;;;BounceKeys
+BeepWhenAKeysIs;BeepWhenAKeysIs?;Boolean;true | false;;;SlowKeys
+BeepWhenAKeysIs*;Which BeepWhenAKeysIs*?;Enumeration;Accepted | Rejected | Pressed;1:3;;BeepWhenAKeysIs
+BeepWhenAModifierKeysIsPressed;BeepWhenAModifierKeysIsPressed?;Boolean;true | false;;;StickyKeys
+BounceKeys;BounceKeys?;Boolean;true | false;;"if (!((SlowKeys || AcceptanceDelay2) || !AcceptanceDelay)) {BounceKeys = true;}";Typing3
+BrightnessAndLock;BrightnessAndLock?;Boolean;true | false;;;true
+BuiltInDisplay;BuiltInDisplay?;Boolean;true | false;;"if (LauncherPlacement.BuiltInDisplay1) {BuiltInDisplay = true;}if (ScaleAllWindowContentToMatch.BuiltInDisplay2) {BuiltInDisplay = true;}";true
+Ctrl_Alt_S;Ctrl_Alt_S?;Boolean;true | false;;"if (Windows*.ToggleShadedState) {Ctrl_Alt_S = true;}if (Windows*.ToggleMaximisationState) {Ctrl_Alt_S = true;}";true
+CursorBlinksInTextFields;CursorBlinksInTextFields?;Boolean;true | false;;;Typing1_1.CursorBlinking
+CustomShortcuts;CustomShortcuts?;Boolean;true | false;;;Shortcuts
+Delay;Delay?;Boolean;true | false;;"if (Delay1) {Delay = true;}if (Typing1_1.RepeatKeys) {Delay = true;}";true
+Delay1;Delay1?;Boolean;true | false;;"if (!(Typing1_1.RepeatKeys || !Delay)) {Delay1 = true;}";HoverClick
+Delay1*;Which Delay1*?;Enumeration;Long5 | Short3;1:1;;Delay1
+Delay2;Which Delay2?;Enumeration;Short4 | Long1;1:1;"if (!((((Delay1*.Long5 || AcceptanceDelay2*.Long4) || AcceptanceDelay1.Long3) || AcceptanceDelay3.Long2) || !Long)) {Delay2 = Long1;}";Typing1_1.RepeatKeys
+DimSceenToSaveLeft;DimSceenToSaveLeft?;Boolean;true | false;;;BrightnessAndLock
+DisableIfTwoKeysArePressedTogether;DisableIfTwoKeysArePressedTogether?;Boolean;true | false;;;StickyKeys
+DisableWhileTyping;DisableWhileTyping?;Boolean;true | false;;;Touchpad
+Disabled;Disabled?;Boolean;true | false;;"if (UniversalAccess2*.DecreaseTextSize) {Disabled = true;}if (Windows*.LowerWindowBelowOtherWindows) {Disabled = true;}if (Typing2*.ComposeKey) {Disabled = true;}if (Navigation) {Disabled = true;}if (UniversalAccess2*.TurnOnScreenKeyboardOnOrOff) {Disabled = true;}if (Windows*.ToggleFullscreenMode) {Disabled = true;}if (Typing2*.AlternativeCharactersKey) {Disabled = true;}if (Windows*.RaiseWindowAboveOtherWindows) {Disabled = true;}if (UniversalAccess2*.IncreaseTextSize) {Disabled = true;}if (UniversalAccess2*.HighContrastOnOrOff) {Disabled = true;}";true
+Displays;Displays?;Boolean;true | false;;;true
+DoubleClick;Which DoubleClick?;Enumeration;Slow3 | Fast3;1:1;;MouseSettings
+EnableByKeyboard;EnableByKeyboard?;Boolean;true | false;;;Typing3
+EnableWorkspaces;EnableWorkspaces?;Boolean;true | false;;;Appearance
+Fast;Fast?;Boolean;true | false;;"if (Speed2*.Fast2) {Fast = true;}if (DoubleClick.Fast3) {Fast = true;}if (Speed1.Fast1) {Fast = true;}";true
+Hearing;Hearing?;Boolean;true | false;;;UniversalAccess1
+HighContrast;HighContrast?;Boolean;true | false;;;true
+HighContrast2;HighContrast2?;Boolean;true | false;;;Seeing
+HoverClick;HoverClick?;Boolean;true | false;;;PointingAndClicking
+KeyPressesRepeatWhenKeyIsHeldDown;KeyPressesRepeatWhenKeyIsHeldDown?;Boolean;true | false;;;Typing1_1.RepeatKeys
+KeyboardSetting;KeyboardSetting?;Boolean;true | false;;"if (!((Typing3 || Typing2) || !Typing)) {KeyboardSetting = true;}";TextEntry
+LargeText;LargeText?;Boolean;true | false;;;Seeing
+LauncherIconSize;Which LauncherIconSize?;Enumeration;x_48 | x_32 | x_64;1:1;;Appearance
+LauncherPlacement;Which LauncherPlacement?;Enumeration;AllDisplays | BuiltInDisplay1;1:1;"if (!(ScaleAllWindowContentToMatch.BuiltInDisplay2 || !BuiltInDisplay)) {LauncherPlacement = BuiltInDisplay1;}";Displays
+Launchers;Launchers?;Boolean;true | false;;;Shortcuts
+Launchers*;Which Launchers*?;Enumeration;KeyToShowTheHUD | LauncherTerminal;1:1;;Launchers
+LayoutSettings;LayoutSettings?;Boolean;true | false;;;KeyboardSetting
+LayoutSettings*;Which LayoutSettings*?;Enumeration;AllowDifferentLayoutsForIndividualWindows2 | UseTheSameLayoutForAllWindows;1:1;;LayoutSettings
+Left;Left?;Boolean;true | false;;"if (RevealLocation.Left1) {Left = true;}if (PrimaryButton.Left2) {Left = true;}";true
+Lock1;Lock1?;Boolean;true | false;;;BrightnessAndLock
+LockScreenAfter;Which LockScreenAfter?;Enumeration;x_30Minutes_ | x_2Minutes_ | x_1Hour_ | x_10Minutes_ | ScreenTurnsOff | x_1Minute_ | x_30Seconds | x_5Minutes_;1:1;;Lock1
+Long;Long?;Boolean;true | false;;"if (Delay1*.Long5) {Long = true;}if (AcceptanceDelay3.Long2) {Long = true;}if (Delay2.Long1) {Long = true;}if (AcceptanceDelay2*.Long4) {Long = true;}if (AcceptanceDelay1.Long3) {Long = true;}";true
+MotionThreshold;MotionThreshold?;Boolean;true | false;;;HoverClick
+MotionThreshold*;Which MotionThreshold*?;Enumeration;Large | Small;1:1;;MotionThreshold
+MouseKeys;MouseKeys?;Boolean;true | false;;;PointingAndClicking
+MouseSettings;MouseSettings?;Boolean;true | false;;;PointingAndClicking
+NaturalScrolling;NaturalScrolling?;Boolean;true | false;;;Touchpad
+Navigation;Navigation?;Boolean;true | false;;"if (!(((((((((Windows*.LowerWindowBelowOtherWindows || Windows*.RaiseWindowAboveOtherWindows) || Windows*.ToggleFullscreenMode) || UniversalAccess2*.HighContrastOnOrOff) || UniversalAccess2*.DecreaseTextSize) || UniversalAccess2*.IncreaseTextSize) || UniversalAccess2*.TurnOnScreenKeyboardOnOrOff) || Typing2*.AlternativeCharactersKey) || Typing2*.ComposeKey) || !Disabled)) {Navigation = true;}";Shortcuts
+New_Accelerator;New_Accelerator?;Boolean;true | false;;"if (SwitchToPreviousSourceUsing.New_Accelerator1) {New_Accelerator = true;}if (SwitchToNextSourceUsing.New_Accelerator2) {New_Accelerator = true;}";true
+OnScreenKeyboard;OnScreenKeyboard?;Boolean;true | false;;;Typing3
+PointingAndClicking;PointingAndClicking?;Boolean;true | false;;;UniversalAccess1
+PrimaryButton;Which PrimaryButton?;Enumeration;Right | Left2;1:1;;MouseSettings
+RequireMyPasswordWhenWakingFromSuspend;RequireMyPasswordWhenWakingFromSuspend?;Boolean;true | false;;;BrightnessAndLock
+Resolution;Which Resolution?;Enumeration;Normal | Clockwise | Counterclockwise | x_180Degres;1:1;;Displays
+RevealLocation;Which RevealLocation?;Enumeration;Left1 | TopLeftCorner;1:1;"if (!(PrimaryButton.Left2 || !Left)) {RevealLocation = Left1;}";Appearance
+RevealSensitivity;Which RevealSensitivity?;Enumeration;Low | High;1:1;;Appearance
+ScaleAllWindowContentToMatch;Which ScaleAllWindowContentToMatch?;Enumeration;DisplayWithSmallestControls | DisplayWithLargestControls | BuiltInDisplay2;1:1;;Displays
+ScreenReader;ScreenReader?;Boolean;true | false;;;Seeing
+Screenshots;Screenshots?;Boolean;true | false;;;Shortcuts
+Screenshots*;Which Screenshots*?;Enumeration;CopyAScreenhotOfAnAreaToClipboard | TakeAScreenshotOfAWindow | CopyAScreenshotOfAwindowToClipboard | TakeAScreenshot | CopyAScreenshotToClipboard | TakeAScreenshotOfAnArea;1:1;;Screenshots
+Seeing;Seeing?;Boolean;true | false;;;UniversalAccess1
+Shift_Super_Space;Shift_Super_Space?;Boolean;true | false;;"if (SwitchToPreviousSourceUsing.Shift_Super_Space1) {Shift_Super_Space = true;}if (Typing2*.SwitchToPreviousSource) {Shift_Super_Space = true;}";true
+Short;Short?;Boolean;true | false;;"if (AcceptanceDelay2*.Short2) {Short = true;}if (Delay2.Short4) {Short = true;}if (AcceptanceDelay1.Short1) {Short = true;}if (Delay1*.Short3) {Short = true;}if (AcceptanceDelay3.Short5) {Short = true;}";true
+Shortcuts;Shortcuts?;Boolean;true | false;;;KeyboardSetting
+ShowInputCandidates;Which ShowInputCandidates?;Enumeration;Vertically | Horizontally;1:1;;TextEntry
+ShowTheMenusForAWindow;Which ShowTheMenusForAWindow?;Enumeration;InTheMenuBar | InTheWindowsTitleBar;1:1;;Appearance
+SimulatedSecondaryCLick;SimulatedSecondaryCLick?;Boolean;true | false;;;PointingAndClicking
+Slow;Slow?;Boolean;true | false;;"if (Speed2*.Slow2) {Slow = true;}if (DoubleClick.Slow3) {Slow = true;}if (Speed1.Slow1) {Slow = true;}";true
+SlowKeys;SlowKeys?;Boolean;true | false;;;Typing3
+SoundAndMedia;SoundAndMedia?;Boolean;true | false;;;Shortcuts
+Speed;Speed?;Boolean;true | false;;"if (Typing1_1.RepeatKeys) {Speed = true;}if (Speed2) {Speed = true;}";true
+Speed1;Which Speed1?;Enumeration;Fast1 | Slow1;1:1;"if (!((DoubleClick.Fast3 || Speed2*.Fast2) || !Fast)) {Speed1 = Fast1;}if (!((DoubleClick.Slow3 || Speed2*.Slow2) || !Slow)) {Speed1 = Slow1;}";Typing1_1.RepeatKeys
+Speed2;Speed2?;Boolean;true | false;;;Typing1_1.CursorBlinking
+Speed2*;Which Speed2*?;Enumeration;Fast2 | Slow2;1:1;;Speed2
+StickyEdges;StickyEdges?;Boolean;true | false;;;Displays
+StickyKeys;StickyKeys?;Boolean;true | false;;;Typing3
+Super_Space;Super_Space?;Boolean;true | false;;"if (Typing2*.SwitchToNextSource) {Super_Space = true;}if (SwitchToNextSourceUsing.Super_Space1) {Super_Space = true;}";true
+SwitchToNextSourceUsing;Which SwitchToNextSourceUsing?;Enumeration;Super_Space1 | New_Accelerator2;1:1;"if (!(Typing2*.SwitchToNextSource || !Super_Space)) {SwitchToNextSourceUsing = Super_Space1;}";TextEntry
+SwitchToPreviousSourceUsing;Which SwitchToPreviousSourceUsing?;Enumeration;New_Accelerator1 | Shift_Super_Space1;1:1;"if (!(Typing2*.SwitchToPreviousSource || !Shift_Super_Space)) {SwitchToPreviousSourceUsing = Shift_Super_Space1;}if (!(SwitchToNextSourceUsing.New_Accelerator2 || !New_Accelerator)) {SwitchToPreviousSourceUsing = New_Accelerator1;}";TextEntry
+System;System?;Boolean;true | false;;;Shortcuts
+System*;Which System*?;Enumeration;LockScreen | LogOut;1:1;;System
+TapTopClick;TapTopClick?;Boolean;true | false;;;Touchpad
+TextEntry;TextEntry?;Boolean;true | false;;;true
+TextEntry_4;Which TextEntry_4?;Enumeration;AllowDifferentSourcesForEachWindow | UseTheSameSourceForAllWindows;1:1;;TextEntry
+Theme;Which Theme?;Enumeration;Adwaita | AmbianceDefault | Radiance | HighContrast1;1:1;;Appearance
+Touchpad;Touchpad?;Boolean;true | false;;;MouseSettings
+TurnScreenOffWhenInactiveFor;Which TurnScreenOffWhenInactiveFor?;Enumeration;x_2Minutes | x_1Hour | x_10Minutes | x_30Minutes | x_1Minute | Never | x_3Minutes;1:1;;BrightnessAndLock
+TwoFingerScroll;TwoFingerScroll?;Boolean;true | false;;;Touchpad
+Typing;Typing?;Boolean;true | false;;"if (KeyboardSetting) {Typing = true;}if (Typing3) {Typing = true;}if (Typing2) {Typing = true;}";true
+Typing1_1;Which Typing1_1?;Enumeration;CursorBlinking | RepeatKeys;1:1;"if (!(Speed2 || !Speed)) {Typing1_1 = RepeatKeys;}";KeyboardSetting
+Typing2;Typing2?;Boolean;true | false;;;Shortcuts
+Typing2*;Which Typing2*?;Enumeration;SwitchToNextSource | ComposeKey | AlternativeCharactersKey | SwitchToPreviousSource;1:1;;Typing2
+Typing3;Typing3?;Boolean;true | false;;;UniversalAccess1
+UniversalAccess;UniversalAccess?;Boolean;true | false;;"if (UniversalAccess2) {UniversalAccess = true;}if (UniversalAccess1) {UniversalAccess = true;}";true
+UniversalAccess1;UniversalAccess1?;Boolean;true | false;;"if (!(UniversalAccess2 || !UniversalAccess)) {UniversalAccess1 = true;}";true
+UniversalAccess2;UniversalAccess2?;Boolean;true | false;;;Shortcuts
+UniversalAccess2*;Which UniversalAccess2*?;Enumeration;TurnOnScreenKeyboardOnOrOff | DecreaseTextSize | IncreaseTextSize | ZoomIn | TurnZoomOnOrOff | TurnScreenReaderOnOrOff | ZoomOut | HighContrastOnOrOff;1:1;"if (!(UniversalAccess2*.TurnScreenReaderOnOrOff || !Alt_Super_plus)) {UniversalAccess2* = TurnZoomOnOrOff;}";UniversalAccess2
+UsingCustomFont;UsingCustomFont?;Boolean;true | false;;;TextEntry
+VisualAlerts;VisualAlerts?;Boolean;true | false;;;Hearing
+VisualAlerts*;Which VisualAlerts*?;Enumeration;FlashTheWindowTitle | FlashTheEntireScreen;1:1;;VisualAlerts
+Windows;Windows?;Boolean;true | false;;;Shortcuts
+Windows*;Which Windows*?;Enumeration;ToggleMaximisationState | ToggleShadedState | MaximiseWindow | MoveWindow | MinimizeWindow | ActivateTheWindowMenu | ResizeWindow | RaiseWindowAboveOtherWindows | ToggleFullscreenMode | RestoreWindow | CloseWindow | LowerWindowBelowOtherWindows;1:1;"if (!(Windows*.ToggleShadedState || !Ctrl_Alt_S)) {Windows* = ToggleMaximisationState;}";Windows

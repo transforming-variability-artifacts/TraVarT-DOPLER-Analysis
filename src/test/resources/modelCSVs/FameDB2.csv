@@ -1,0 +1,8 @@
+ID;Question;Type;Range;Cardinality;Constraint/Rule;Visible/relevant if
+API;Which API?;Enumeration;get | put | delete;1:3;;true
+BufferMgr;Which BufferMgr?;Enumeration;Persistent | InMemory;1:1;;true
+DebugLogging;DebugLogging?;Boolean;true | false;;;true
+Index;Which Index?;Enumeration;BTree | Unindexed;1:1;;true
+MemAlloc;Which MemAlloc?;Enumeration;Static | Dynamic;1:1;;BufferMgr.Persistent
+OS;Which OS?;Enumeration;NutOS | Win;1:1;;true
+PageRepl;Which PageRepl?;Enumeration;LRU | LFU;1:1;;BufferMgr.Persistent

@@ -1,0 +1,7 @@
+ID;Question;Type;Range;Cardinality;Constraint/Rule;Visible/relevant if
+Environment;In which runtime environment is this microservice deployed?;Enumeration;language | framework | container/VM | process count;01:04;;true
+Replicas;How many replicas of this microservice normally run?;Double;1-200;;if(Replicas > 100){Autoscaling=true};true
+Autoscaling;What autoscaling rules (if any) are defined?;String;;;;Replicas > 100
+Limits;What explicit resource requests or limits are set for this microservice?;Enumeration;CPU | memory | threads| connection pools;01:04;;true
+Flags;Which configuration flags, environment variables, or startup parameters of this microservice materially affect performance?;String;;;;true
+HardwareProfile;What host-level hardware profile best represents the production or test environment for running this microservice?;Enumeration;CPU model | core count | memory | network;01:04;;true

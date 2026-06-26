@@ -1,0 +1,14 @@
+ID;Question;Type;Range;Cardinality;Constraint/Rule;Visible/relevant if
+CV;CV?;Boolean;true | false;;;true
+CV*;Which CV*?;Enumeration;Document_Management | Customer_Management | Claims_Management;1:3;;CV
+CV_Claims;CV_Claims?;Boolean;true | false;;"if (CV*.Claims_Management) {CV_Claims = true;}";true
+CV_Claims*;Which CV_Claims*?;Enumeration;journal | task_manager;1:2;;CV_Claims
+CV_Customer;CV_Customer?;Boolean;true | false;;"if (CV*.Customer_Management) {CV_Customer = true;}";true
+CV_Customer*;Which CV_Customer*?;Enumeration;phone | mail;1:2;;CV_Customer
+CV_Documents;CV_Documents?;Boolean;true | false;;"if (CV*.Document_Management) {CV_Documents = true;}";true
+CV_Documents*;Which CV_Documents*?;Enumeration;archive | scan_new | read_existing | import_external;1:4;;CV_Documents
+SV;Which SV?;Enumeration;Solution | Particular_Packages;1:1;"if (SV_Solution) {SV = Solution;}if (SV_Particular_Package) {SV = Particular_Packages;}if (CV) {SV = Particular_Packages;}if (CV_Documents) {SV = Particular_Packages;CV* = Document_Management;}if (CV_Customer) {SV = Particular_Packages;CV* = Customer_Management;}if (CV_Claims) {SV = Particular_Packages;CV* = Claims_Management;}";true
+SV_Particular_Package;SV_Particular_Package?;Boolean;true | false;;;true
+SV_Particular_Package*;Which SV_Particular_Package*?;Enumeration;Label_Printing | Standard_Letter | Organizer | Docs | Else;1:5;;SV_Particular_Package
+SV_Solution;SV_Solution?;Boolean;true | false;;;true
+SV_Solution*;Which SV_Solution*?;Enumeration;BMDCRM | BMD;1:1;;SV_Solution

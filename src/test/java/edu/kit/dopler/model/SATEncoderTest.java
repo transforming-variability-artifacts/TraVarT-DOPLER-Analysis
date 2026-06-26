@@ -6,39 +6,25 @@
  * with this file, You can obtain one at
  * https://mozilla.org/MPL/2.0/.
  *
- * Contributors:
- * 
- * @author Fabian Eger
- * @author Kevin Feichtinger
- *
- *         Copyright 2024 Karlsruhe Institute of Technology (KIT)
- *         KASTEL - Dependability of Software-intensive Systems
+ * Copyright 2024 Karlsruhe Institute of Technology (KIT)
+ * KASTEL - Dependability of Software-intensive Systems
  *******************************************************************************/
 package edu.kit.dopler.model;
-
-import edu.kit.dopler.exceptions.NotSupportedVariabilityTypeException;
-import junit.framework.TestCase;
-import static edu.kit.dopler.common.DoplerUtils.readDOPLERModelFromFile;
-import static edu.kit.dopler.common.SolverUtils.checkSat;
-import static edu.kit.dopler.common.SolverUtils.getAmountOfConfigs;
-
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.HashSet;
-import java.util.stream.Stream;
 
 //
 // public class SATEncoderTest extends TestCase {
 //
 //
-//// public int getFeatureIDConfigs(Path filePath) throws IOException {
-//// FileSystem.INSTANCE = new JavaFileSystem();
-//// LongRunningWrapper.INSTANCE = new LongRunningCore();
-//// Logger.logger = new JavaLogger();
-////
-//// FMFactoryManager.getInstance().addExtension(DefaultFeatureModelFactory.getInstance());
-//// FMFactoryManager.getInstance().addExtension(MultiFeatureModelFactory.getInstance());
-//// FMFactoryManager.getInstance().setWorkspaceLoader(new
+/// / public int getFeatureIDConfigs(Path filePath) throws IOException {
+/// / FileSystem.INSTANCE = new JavaFileSystem();
+/// / LongRunningWrapper.INSTANCE = new LongRunningCore();
+/// / Logger.logger = new JavaLogger();
+/// /
+/// /
+// FMFactoryManager.getInstance().addExtension(DefaultFeatureModelFactory.getInstance());
+/// /
+// FMFactoryManager.getInstance().addExtension(MultiFeatureModelFactory.getInstance());
+/// / FMFactoryManager.getInstance().setWorkspaceLoader(new
 // CoreFactoryWorkspaceLoader());
 ////
 //// CLIFunctionManager.getInstance().addExtension(new

@@ -6,27 +6,25 @@
  * with this file, You can obtain one at
  * https://mozilla.org/MPL/2.0/.
  *
- * Contributors: 
- *    @author David Kowal
- *    @author Kevin Feichtinger
- *
  * Copyright 2024 Karlsruhe Institute of Technology (KIT)
  * KASTEL - Dependability of Software-intensive Systems
  *******************************************************************************/
-
 package edu.kit.dopler.io.antlr;
 
 import edu.kit.dopler.exceptions.InvalidCardinalityException;
 import edu.kit.dopler.io.antlr.resources.DoplerLexer;
 import edu.kit.dopler.io.antlr.resources.DoplerParser.*;
-import edu.kit.dopler.model.*;
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.TerminalNode;
-
+import edu.kit.dopler.model.Dopler;
+import edu.kit.dopler.model.basic.Enumeration;
+import edu.kit.dopler.model.basic.EnumerationLiteral;
+import edu.kit.dopler.model.decisions.*;
+import edu.kit.dopler.model.expressions.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.TerminalNode;
 
 public class DoplerDecisionCreator extends DecisionParserBase {
 
@@ -57,7 +55,9 @@ public class DoplerDecisionCreator extends DecisionParserBase {
             if (currentDecision instanceof EnumerationDecision) {
                 EnumerationDecision enumerationDecision = (EnumerationDecision) currentDecision;
                 try {
-                    enumerationDecision.setCardinality(Integer.parseInt(cardinals.get(0).getText()), Integer.parseInt(cardinals.get(1).getText()));
+                    enumerationDecision.setCardinality(
+                            Integer.parseInt(cardinals.get(0).getText()),
+                            Integer.parseInt(cardinals.get(1).getText()));
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
                 } catch (InvalidCardinalityException e) {
@@ -66,7 +66,6 @@ public class DoplerDecisionCreator extends DecisionParserBase {
             }
         }
     }
-
 
     @Override
     public void enterQuestion(QuestionContext ctx) {
@@ -142,20 +141,44 @@ public class DoplerDecisionCreator extends DecisionParserBase {
                 TerminalNode node = (TerminalNode) child;
                 switch (node.getSymbol().getType()) {
                     case DoplerLexer.NumberDecision:
-                        dopler.addDecision(new NumberDecision(currentID, currentQuestion, currentDescription, new BooleanLiteralExpression(true), new HashSet<>(), new HashSet<>()));
+                        dopler.addDecision(new NumberDecision(
+                                currentID,
+                                currentQuestion,
+                                currentDescription,
+                                new BooleanLiteralExpression(true),
+                                new HashSet<>(),
+                                new HashSet<>()));
                         break;
                     case DoplerLexer.EnumerationDecision:
-                        dopler.addDecision(new EnumerationDecision(currentID, currentQuestion, currentDescription, new BooleanLiteralExpression(true), new HashSet<>(), null, 1, 1));
+                        dopler.addDecision(new EnumerationDecision(
+                                currentID,
+                                currentQuestion,
+                                currentDescription,
+                                new BooleanLiteralExpression(true),
+                                new HashSet<>(),
+                                null,
+                                1,
+                                1));
                         break;
                     case DoplerLexer.BooleanDecision:
-                        dopler.addDecision(new BooleanDecision(currentID, currentQuestion, currentDescription, new BooleanLiteralExpression(true), new HashSet<>()));
+                        dopler.addDecision(new BooleanDecision(
+                                currentID,
+                                currentQuestion,
+                                currentDescription,
+                                new BooleanLiteralExpression(true),
+                                new HashSet<>()));
                         break;
                     case DoplerLexer.StringDecision:
-                        dopler.addDecision(new StringDecision(currentID, currentQuestion, currentDescription, new BooleanLiteralExpression(true), new HashSet<>(), new HashSet<>()));
+                        dopler.addDecision(new StringDecision(
+                                currentID,
+                                currentQuestion,
+                                currentDescription,
+                                new BooleanLiteralExpression(true),
+                                new HashSet<>(),
+                                new HashSet<>()));
                         break;
                 }
             }
         }
     }
-
 }

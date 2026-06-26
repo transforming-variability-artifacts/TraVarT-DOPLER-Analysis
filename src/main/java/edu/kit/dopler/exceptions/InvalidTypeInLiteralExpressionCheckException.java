@@ -6,10 +6,6 @@
  * with this file, You can obtain one at
  * https://mozilla.org/MPL/2.0/.
  *
- * Contributors: 
- *    @author Fabian Eger
- *    @author Kevin Feichtinger
- *
  * Copyright 2024 Karlsruhe Institute of Technology (KIT)
  * KASTEL - Dependability of Software-intensive Systems
  *******************************************************************************/
@@ -23,8 +19,9 @@ public class InvalidTypeInLiteralExpressionCheckException extends Exception {
      * not initialized, and may subsequently be initialized by a call to
      * {@link #initCause}.
      *
-     * @param message the detail message. The detail message is saved for later
-     *                retrieval by the {@link #getMessage()} method.
+     * @param message
+     *            the detail message. The detail message is saved for later
+     *            retrieval by the {@link #getMessage()} method.
      */
     public InvalidTypeInLiteralExpressionCheckException(final String message) {
         super(message);
@@ -37,9 +34,10 @@ public class InvalidTypeInLiteralExpressionCheckException extends Exception {
      * exceptions that are little more than wrappers for other throwables (for
      * example, {@link PrivilegedActionException}).
      *
-     * @param cause the cause (which is saved for later retrieval by the
-     *              {@link #getCause()} method). (A {@code null} value is permitted,
-     *              and indicates that the cause is nonexistent or unknown.)
+     * @param cause
+     *            the cause (which is saved for later retrieval by the
+     *            {@link #getCause()} method). (A {@code null} value is permitted,
+     *            and indicates that the cause is nonexistent or unknown.)
      * @since 1.4
      */
     public InvalidTypeInLiteralExpressionCheckException(final Throwable cause) {

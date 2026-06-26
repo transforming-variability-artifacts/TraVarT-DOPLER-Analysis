@@ -1,0 +1,3 @@
+ID;Question;Type;Range;Cardinality;Constraint/Rule;Visible/relevant if
+AccountType;What is the account type?;String;;;;true
+AccessLevel;What is the access level?;Enumeration;A | B | C | D;;;AccountType == 'Manager'

@@ -1,0 +1,19 @@
+ID;Question;Type;Range;Cardinality;Constraint/Rule;Visible/relevant if
+BindingTime;Which BindingTime?;Enumeration;CompileTime | Runtime | Other_2;1:3;;VariabilityDecision
+Cardinality;Cardinality?;Boolean;true | false;;;true
+CommunicationSharing;CommunicationSharing?;Boolean;true | false;;;Organizational
+CompositionRules_2;Which CompositionRules_2?;Enumeration;Constraints | Dependency;1:2;;true
+DomainAnalysis;DomainAnalysis?;Boolean;true | false;;"if (true) {DomainAnalysis = true;}";true
+Guidance;Guidance?;Boolean;true | false;;;Organizational
+Notation;Which Notation?;Enumeration;FeatureModel | DecisionModel | Orthodonal | Other;1:1;;true
+NotifyingFeedback;NotifyingFeedback?;Boolean;true | false;;;Organizational
+Organizational;Organizational?;Boolean;true | false;;"if (true) {Organizational = true;}";true
+PlanningManagement;PlanningManagement?;Boolean;true | false;;;Organizational
+RequirementSpecifications;RequirementSpecifications?;Boolean;true | false;;;DomainAnalysis
+Traceability;Traceability?;Boolean;true | false;;;true
+TradeOffAnalysis;TradeOffAnalysis?;Boolean;true | false;;;Organizational
+VariabilityDecision;VariabilityDecision?;Boolean;true | false;;"if (!VariabilityDecision) {VariabilityDecision = false;}";true
+VariabilityEvolution;VariabilityEvolution?;Boolean;true | false;;;true
+VariabilityValidation;VariabilityValidation?;Boolean;true | false;;;true
+VariabilityValidation_2;Which VariabilityValidation_2?;Enumeration;LogicSolvers | Reasoners | Other_1;1:3;;VariabilityValidation
+VerificationReports;VerificationReports?;Boolean;true | false;;;VariabilityValidation

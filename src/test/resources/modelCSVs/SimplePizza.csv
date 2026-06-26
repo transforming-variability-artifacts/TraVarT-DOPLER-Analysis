@@ -1,0 +1,6 @@
+ID;Question;Type;Range;Cardinality;Constraint/Rule;Visible/relevant if
+Topping;Which Topping?;Enumeration;Salami | Ham | Mozzarella;1:3;;true
+Size;Which Size?;Enumeration;Normal | Big;1:1;;true
+Dough;Which Dough?;Enumeration;Neapolitan | Sicilian;1:1;;true
+CheesyCrust;CheesyCrust?;Boolean;true | false;;;true
+CheesyCrust*;Which CheesyCrust*?;Enumeration;SuperCheesy | MildCheesy;1:1;;CheesyCrust
