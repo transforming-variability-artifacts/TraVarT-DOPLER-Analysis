@@ -68,3 +68,7 @@ Detailed Explanation of the CP Encoding you can find [here](docs/CPEncoding.md)
 ## CI Pipeline
 
 Information about the CI pipeline see [here](docs/CIPipeline.md)
+
+## Contributors
+
+Information about the contributors can be found [here](CONTRIBUTORS.md)
