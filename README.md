@@ -1,5 +1,28 @@
 # Analysis of Decision Models
 
+## Publication
+
+If you use our implementation in your work, please cite our paper: [![DOI](https://zenodo.org/badge/DOI/10.1007/978-3-032-36587-3_2.svg)](https://doi.org/10.1007/978-3-032-36587-3_2)
+
+```
+@InProceedings{eger_seaa_2026,
+author="Eger, Fabian
+and Heisinger, Maximilian
+and Rabiser, Rick
+and Feichtinger, Kevin",
+editor="Berger, Christian
+and Kl{\"o}s, Verena",
+title="Analyzing {DOPLER} Decision Models with {SMT}",
+booktitle="Software Engineering and Advanced Applications (SEAA 2026)",
+year="2026",
+publisher="Springer Nature Switzerland",
+address="Cham",
+pages="20--29",
+abstract="In software product line engineering, decision modeling is one of the most common approaches to variability modeling. Decision models are particularly suitable to guide users through products and available customization options, which often represent huge configuration spaces and would hence benefit from automated analysis. However, only very few SAT- and SMT-based analysis techniques have been implemented for decision models. In this paper, we propose a novel encoding for decision-modeling concepts in SMT. We implemented our SMT encoding within a DOPLER decision meta-model re-implementation and assessed feasibility and applicability using publicly available models. Our results show that our encoding facilitates unsatisfiability analysis and anomaly detection in DOPLER decision models. With this work, we improve the configuration support of decision modeling with SMT-based analysis.",
+isbn="978-3-032-36587-3"
+}
+```
+
 ## Run
 
 To run the code, follow the instructions based on the environment:
